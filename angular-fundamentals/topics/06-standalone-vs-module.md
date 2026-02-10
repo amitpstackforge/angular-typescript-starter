@@ -67,3 +67,75 @@ bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });
 2) `src/main.ts` খুলে `bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });` রাখুন।
 3) `app.routes.ts` এ lazy route যোগ করুন (উদাহরণ: pharmacy loadComponent); সংশ্লিষ্ট কম্পোনেন্ট ফাইল তৈরি করুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে lazy chunk লোড হচ্ছে কিনা যাচাই করুন, UI স্টাইল দেখুন।
+
+## পূর্ণ রানযোগ্য ন্যূনতম কোড (Standalone + lazy ডেমো)
+**ট্রি**
+```
+src/main.ts
+src/app/app.routes.ts
+src/app/shell.component.ts
+src/app/beds.component.ts
+```
+
+**main.ts**
+```ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { routes } from './app/app.routes';
+import { ShellComponent } from './app/shell.component';
+
+bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });
+```
+
+**app.routes.ts**
+```ts
+import { Routes } from '@angular/router';
+import { ShellComponent } from './shell.component';
+
+export const routes: Routes = [
+  { path: '', component: ShellComponent },
+  { path: 'beds', loadComponent: () => import('./beds.component').then(m => m.BedsComponent) },
+  { path: '**', redirectTo: '' },
+];
+```
+
+**shell.component.ts**
+```ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'hms-shell',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterOutlet],
+  template: `
+  <div class="p-4 space-y-3">
+    <a routerLink="/beds" class="text-blue-600">Go to Beds (lazy)</a>
+    <router-outlet></router-outlet>
+  </div>
+  `,
+})
+export class ShellComponent {}
+```
+
+**beds.component.ts**
+```ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  standalone: true,
+  selector: 'hms-beds',
+  imports: [CommonModule],
+  template: `
+  <div class="bg-white border rounded-xl p-4 shadow">
+    <h2 class="text-lg font-semibold">Lazy Beds Component</h2>
+    <p class="text-sm text-slate-600">Loaded via loadComponent.</p>
+  </div>
+  `,
+})
+export class BedsComponent {}
+```
+
+**Run**: `ng serve` → http://localhost:4200 → “Go to Beds (lazy)” ক্লিক করুন; Network ট্যাবে lazy chunk দেখুন।

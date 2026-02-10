@@ -76,3 +76,82 @@ addSymptom() { this.form.controls.symptoms.push(new FormControl('')); }
 2) `angular-fundamentals/demos/hms-appointments/*` → `src/app/` কপি করুন।
 3) Tailwind CDN `src/index.html` এ যোগ করুন।
 4) `ng serve`; `/appointments` পেজে reactive form, errors, spinner, disable state—all observable। Network ট্যাবে POST (jsonplaceholder) দেখুন।
+
+## পূর্ণ রানযোগ্য ন্যূনতম কোড (Reactive Forms ডেমো)
+**ট্রি**
+```
+src/app/app.component.ts
+src/app/app.component.html
+```
+
+**app.component.ts**
+```ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {
+  loading = false;
+  form = this.fb.group({
+    name: ['', [Validators.required, Validators.minLength(2)]],
+    age: new FormControl<number | null>(null),
+    symptoms: this.fb.array([this.fb.control('')]),
+  });
+
+  constructor(private fb: FormBuilder) {}
+
+  get symptoms() { return this.form.controls.symptoms as FormArray; }
+  addSymptom() { this.symptoms.push(this.fb.control('')); }
+  remove(i: number) { this.symptoms.removeAt(i); }
+
+  submit() {
+    if (this.form.invalid) return;
+    this.loading = true;
+    setTimeout(() => { this.loading = false; alert(JSON.stringify(this.form.value)); }, 800);
+  }
+}
+```
+
+**app.component.html**
+```html
+<div class="p-4 space-y-3">
+  <h1 class="text-xl font-semibold">Patient Intake</h1>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="space-y-3">
+    <div class="grid gap-3 md:grid-cols-2">
+      <div>
+        <label class="label">Name</label>
+        <input class="input" formControlName="name" placeholder="Patient name" />
+        <p *ngIf="form.controls.name.invalid && form.controls.name.touched" class="text-xs text-rose-600">Name required</p>
+      </div>
+      <div>
+        <label class="label">Age</label>
+        <input class="input" type="number" formControlName="age" />
+      </div>
+    </div>
+
+    <div>
+      <label class="label">Symptoms</label>
+      <div formArrayName="symptoms" class="space-y-2">
+        <div *ngFor="let c of symptoms.controls; let i=index" class="flex gap-2">
+          <input class="input flex-1" [formControlName]="i" placeholder="Symptom" />
+          <button type="button" class="text-sm text-rose-600" (click)="remove(i)">✕</button>
+        </div>
+      </div>
+      <button type="button" class="text-sm text-blue-600 mt-1" (click)="addSymptom()">+ Add symptom</button>
+    </div>
+
+    <button class="btn" type="submit" [disabled]="loading || form.invalid">
+      <span *ngIf="loading" class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full inline-block mr-2"></span>
+      Submit
+    </button>
+  </form>
+</div>
+```
+
+**Run**: `ng serve` → fill form; invalid হলে submit disabled; spinner দেখাবে।

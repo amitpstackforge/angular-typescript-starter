@@ -77,3 +77,76 @@ get classes() { return this.tone==='green' ? 'bg-emerald-100 text-emerald-700' :
 4) `ng serve`  
    - `/patients` এ `hms-patient-card` কম্পোনেন্টের Input/Output কাজ করছে কিনা দেখুন (Discharge/Edit লগ হবে)।
 5) ট্রি: `components/patient-card.component.ts`, `pages/patients.component.ts` ইতিমধ্যেই ওয়্যার করা।
+
+## পূর্ণ রানযোগ্য ন্যূনতম কোড (Input/Output ডেমো)
+**ফোল্ডার ট্রি**
+```
+src/app/
+  app.component.ts
+  app.component.html
+  patient-card.component.ts
+```
+
+**patient-card.component.ts**
+```ts
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'patient-card',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+  <div class="border rounded-lg p-3 flex justify-between">
+    <div>
+      <p class="font-semibold">{{ patient.name }}</p>
+      <p class="text-xs text-slate-500">Bed: {{ patient.bed }}</p>
+    </div>
+    <div class="flex gap-2">
+      <button class="text-blue-600 text-sm" (click)="edit.emit(patient)">Edit</button>
+      <button class="text-rose-600 text-sm" (click)="discharge.emit(patient.id)">Discharge</button>
+    </div>
+  </div>`,
+})
+export class PatientCardComponent {
+  @Input() patient!: { id: string; name: string; bed: string };
+  @Output() discharge = new EventEmitter<string>();
+  @Output() edit = new EventEmitter<any>();
+}
+```
+
+**app.component.ts**
+```ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { PatientCardComponent } from './patient-card.component';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, PatientCardComponent],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {
+  patients = [
+    { id: 'P1', name: 'Aisha', bed: 'ICU' },
+    { id: 'P2', name: 'Rahul', bed: 'GENERAL' },
+  ];
+  onDischarge(id: string) { console.log('Discharge', id); }
+  onEdit(p: any) { console.log('Edit', p); }
+}
+```
+
+**app.component.html**
+```html
+<div class="p-4 space-y-3">
+  <patient-card
+    *ngFor="let p of patients"
+    [patient]="p"
+    (discharge)="onDischarge($event)"
+    (edit)="onEdit($event)">
+  </patient-card>
+</div>
+```
+
+**Run**: `ng serve` (Tailwind CDN in index.html for styling). Chrome console এ Edit/Discharge ইভেন্ট লগ দেখুন।

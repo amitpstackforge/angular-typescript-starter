@@ -78,3 +78,57 @@ trackById = (_: number, item: any) => item.id;
 4) `ng serve` → http://localhost:4200  
    - `/patients` পেজে `ngFor/ngClass`, debounced search, directive টেস্ট করুন।
 5) ফোল্ডার ট্রি: `components/`, `pages/`, `services/`, `guards/`, `resolvers/`, `interceptors/` সব প্রস্তুত।
+
+## পূর্ণ রানযোগ্য ন্যূনতম কোড (Binding/Directive ডেমো)
+**ফোল্ডার ট্রি (Angular CLI `src/app/`):**
+```
+src/app/
+  app.component.ts
+  app.component.html
+```
+
+**app.component.ts**
+```ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {
+  search = '';
+  beds = [
+    { id: 'B1', type: 'ICU', occupied: true },
+    { id: 'B2', type: 'ICU', occupied: false },
+    { id: 'B3', type: 'GENERAL', occupied: true },
+  ];
+  get filtered() {
+    return this.beds.filter(b => b.id.toLowerCase().includes(this.search.toLowerCase()));
+  }
+  admit() { alert('Admit clicked'); }
+}
+```
+
+**app.component.html**
+```html
+<div class="p-4 space-y-4">
+  <input class="input" [(ngModel)]="search" placeholder="Search bed" />
+  <button class="btn w-auto px-3 py-2" [disabled]="!search" (click)="admit()">Admit ICU</button>
+
+  <ul class="divide-y divide-slate-200">
+    <li *ngFor="let bed of filtered; trackBy: trackById" class="py-2 flex justify-between">
+      <span>{{ bed.id }} ({{ bed.type }})</span>
+      <span [ngClass]="bed.occupied ? 'text-red-600' : 'text-emerald-600'">
+        {{ bed.occupied ? 'Occupied' : 'Free' }}
+      </span>
+    </li>
+  </ul>
+</div>
+```
+
+**(helper)** trackBy ইনলাইন: `trackById = (_:number, item:any) => item.id;` (TS এ যোগ করুন)  
+**Run**: `ng serve` → http://localhost:4200 (Tailwind CDN থাকলে স্টাইল মিলবে)।

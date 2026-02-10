@@ -66,3 +66,59 @@ this.beds$ = this.beds$.pipe(map(list => [...list, newBed]));
 2) `angular-fundamentals/demos/hms-appointments/*` → `src/app/` কপি।
 3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
 4) `ng serve`; `/patients` ও `/appointments` পেজে async pipe + OnPush আপডেট ও trackBy আচরণ দেখুন (Elements প্যানেল DOM নোড স্টেবল থাকে)।
+
+## পূর্ণ রানযোগ্য ন্যূনতম কোড (OnPush + async pipe)
+**ট্রি**
+```
+src/app/app.component.ts
+src/app/app.component.html
+```
+
+**app.component.ts**
+```ts
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { BehaviorSubject } from 'rxjs';
+
+interface Bed { id: string; status: 'Free' | 'Occupied'; }
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './app.component.html',
+})
+export class AppComponent {
+  private bedsSubject = new BehaviorSubject<Bed[]>([
+    { id: 'B1', status: 'Occupied' },
+    { id: 'B2', status: 'Free' },
+  ]);
+  beds$ = this.bedsSubject.asObservable();
+
+  refresh() {
+    this.bedsSubject.next([
+      { id: 'B1', status: 'Occupied' },
+      { id: 'B2', status: 'Free' },
+      { id: 'B3', status: 'Free' },
+    ]);
+  }
+
+  trackById(_i: number, item: Bed) { return item.id; }
+}
+```
+
+**app.component.html**
+```html
+<div class="p-4 space-y-3">
+  <button class="btn w-auto px-3 py-2" (click)="refresh()">Refresh beds</button>
+  <ul>
+    <li *ngFor="let bed of beds$ | async; trackBy: trackById" class="py-1">
+      {{ bed.id }} - {{ bed.status }}
+    </li>
+  </ul>
+  <p class="text-xs text-slate-500">OnPush + async pipe + trackBy</p>
+</div>
+```
+
+**Run**: `ng serve` → Refresh ক্লিক করলে নতুন আইটেম যোগ হয়; OnPush থেকেও UI আপডেট হবে, trackBy ফলে DOM স্থির থাকে।

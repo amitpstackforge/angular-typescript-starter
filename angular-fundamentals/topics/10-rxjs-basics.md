@@ -63,3 +63,58 @@ fromEvent(button,'click').pipe(debounceTime(300)).subscribe(() => save());
 2) `angular-fundamentals/demos/hms-appointments/*` → `src/app/` কপি।
 3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
 4) `ng serve`; `/patients` এ টাইপ করে RxJS debounce+switchMap ফলাফল, loading টেক্সট ও Network কল দেখুন।
+
+## পূর্ণ রানযোগ্য ন্যূনতম কোড (RxJS + debounce ডেমো)
+**ট্রি**
+```
+src/app/app.component.ts
+src/app/app.component.html
+```
+
+**app.component.ts**
+```ts
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { debounceTime, distinctUntilChanged, map, startWith, switchMap } from 'rxjs/operators';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, HttpClientModule],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {
+  private http = inject(HttpClient);
+  loading = false;
+  search = new FormControl('', { nonNullable: true });
+
+  results$ = this.search.valueChanges.pipe(
+    startWith(''),
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap(term => {
+      this.loading = true;
+      return this.http.get<any>(`https://dummyjson.com/users/search?q=${term || 'a'}`);
+    }),
+    map(res => { this.loading = false; return res.users ?? []; })
+  );
+}
+```
+
+**app.component.html**
+```html
+<div class="p-4 space-y-3">
+  <input class="input" [formControl]="search" placeholder="Search patient" />
+  <div *ngIf="loading" class="text-sm text-slate-500">Loading...</div>
+  <ul class="divide-y divide-slate-200">
+    <li *ngFor="let p of results$ | async" class="py-2 flex justify-between">
+      <span>{{ p.firstName }} {{ p.lastName }}</span>
+      <span class="text-xs text-slate-500">{{ p.email }}</span>
+    </li>
+  </ul>
+</div>
+```
+
+**Run**: `ng serve` → টাইপ করলে debounced API কল; Network ট্যাবে দেখুন, তালিকা আপডেট দেখুন।

@@ -68,3 +68,113 @@ ngOnInit() {
 3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
 4) `ng serve`; `/patients`, `/patients/1`, `/appointments` এ ন্যাভ/params/lazy route যাচাই করুন।
 5) রাউট কনফিগ দেখুন `src/app/app.routes.ts` এ।
+
+## পূর্ণ রানযোগ্য ন্যূনতম কোড (Routing ডেমো)
+**ট্রি**
+```
+src/main.ts
+src/app/app.routes.ts
+src/app/app.component.ts
+src/app/app.component.html
+src/app/patient-list.component.ts
+src/app/patient-details.component.ts
+```
+
+**main.ts**
+```ts
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { routes } from './app/app.routes';
+import { AppComponent } from './app/app.component';
+
+bootstrapApplication(AppComponent, { providers: [provideRouter(routes)] });
+```
+
+**app.routes.ts**
+```ts
+import { Routes } from '@angular/router';
+import { AppComponent } from './app.component';
+import { PatientListComponent } from './patient-list.component';
+import { PatientDetailsComponent } from './patient-details.component';
+
+export const routes: Routes = [
+  { path: '', component: PatientListComponent },
+  { path: 'patients/:id', component: PatientDetailsComponent },
+  { path: '**', redirectTo: '' },
+];
+```
+
+**app.component.ts**
+```ts
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
+  templateUrl: './app.component.html',
+})
+export class AppComponent {}
+```
+
+**app.component.html**
+```html
+<div class="p-4 space-y-3">
+  <nav class="flex gap-4 text-sm">
+    <a routerLink="/" routerLinkActive="text-blue-600 font-semibold">Patients</a>
+  </nav>
+  <router-outlet></router-outlet>
+</div>
+```
+
+**patient-list.component.ts**
+```ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, RouterLink],
+  template: `
+  <ul class="divide-y divide-slate-200">
+    <li *ngFor="let p of patients" class="py-2 flex justify-between">
+      <span>{{ p.name }}</span>
+      <a [routerLink]="['/patients', p.id]" class="text-blue-600 text-sm">View</a>
+    </li>
+  </ul>
+  `,
+})
+export class PatientListComponent {
+  patients = [
+    { id: 1, name: 'Aisha' },
+    { id: 2, name: 'Rahul' },
+  ];
+}
+```
+
+**patient-details.component.ts**
+```ts
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+
+@Component({
+  standalone: true,
+  imports: [CommonModule],
+  template: `
+  <div class="bg-white border rounded p-4 shadow">
+    <h2 class="text-lg font-semibold">Patient ID: {{ id }}</h2>
+    <p class="text-sm text-slate-600">Param-based route example.</p>
+  </div>
+  `,
+})
+export class PatientDetailsComponent {
+  id = this.route.snapshot.paramMap.get('id');
+  constructor(private route: ActivatedRoute) {}
+}
+```
+
+**Run**: `ng serve` → list page at `/`; click a patient to go to `/patients/:id`.
