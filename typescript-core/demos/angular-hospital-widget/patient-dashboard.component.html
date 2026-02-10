@@ -1,0 +1,57 @@
+<div class="page">
+  <h1>Hospital Dashboard (Angular)</h1>
+  <p>Vanilla ডেমোর মতোই TypeScript core লজিক, এবার Angular standalone কম্পোনেন্টে।</p>
+
+  <div class="row">
+    <div class="card">
+      <h3>Bed Status</h3>
+      <p>Total: {{ bedStats.total }} | Occupied: {{ bedStats.occupied }} | ICU free: {{ bedStats.icuFree }}</p>
+    </div>
+    <div class="card">
+      <h3>Patients</h3>
+      <ul>
+        <li *ngFor="let p of patients; trackBy: trackById">
+          {{ p.name }} ({{ statusLabel(p.status) }})
+          <span *ngIf="'bedType' in p" class="badge">Bed: {{ (p as any).bedType }}</span>
+        </li>
+      </ul>
+      <button (click)="admitWalkIn()">Admit New Patient</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="card">
+      <h3>Billing</h3>
+      <p>Sample bill (₹5000 + tax): ₹{{ billing.calculate(5000) | number:'1.2-2' }}</p>
+    </div>
+
+    <div class="card">
+      <h3>Pharmacy Inventory</h3>
+      <table>
+        <thead>
+          <tr><th>Name</th><th>Form</th><th>Strength</th><th>Qty</th><th></th></tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of pharmacy; trackBy: trackById">
+            <td>{{ item.name }}</td>
+            <td>{{ item.form }}</td>
+            <td>{{ item.strength }}</td>
+            <td [class.low]="item.quantity < (item.reorderLevel ?? 10)">{{ item.quantity }}</td>
+            <td>
+              <button (click)="dispenseOne(item)" [disabled]="item.quantity === 0">Dispense 1</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Lab Reports</h3>
+    <ul>
+      <li *ngFor="let r of labReports; trackBy: trackById">
+        {{ r.test }} — {{ labStatusLabel(r) }}
+      </li>
+    </ul>
+  </div>
+</div>

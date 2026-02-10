@@ -17,6 +17,8 @@
 - [07) null/undefined + strict mode](topics/07-null-undefined-strict.md)
 - [08) classes + access modifiers + getter/setter](topics/08-classes-access-modifiers.md)
 - [09) async/await + Promise basics](topics/09-async-await-promise.md)
+- [10) Pharmacy scenario: inventory + literal unions](topics/10-pharmacy-inventory.md)
+- [11) Lab scenario: report workflow + exhaustive checks](topics/11-lab-reports.md)
 
 ## দ্রুত রিভিশন
 - প্রতিটি ফাইলে ছোট ধারণা + উদাহরণ + interview প্রশ্ন আছে।
@@ -28,4 +30,5 @@
 - VS Code + Live Server extension
 
 ## Demo
-`demos/hospital-dashboard` এ mini vanilla TS প্রজেক্ট আছে; সেখানে সব core কনসেপ্ট ব্যবহার করে ছোট ড্যাশবোর্ড তৈরি করা হয়েছে।
+- `demos/hospital-dashboard` এ mini vanilla TS প্রজেক্ট আছে; সেখানে সব core কনসেপ্ট ব্যবহার করে ছোট ড্যাশবোর্ড তৈরি করা হয়েছে।
+- `demos/angular-hospital-widget` এ একই লজিকের Angular standalone কম্পোনেন্ট, যাতে side-by-side তুলনা করা যায়।
