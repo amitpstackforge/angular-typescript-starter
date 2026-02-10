@@ -50,3 +50,36 @@
 2) `src/app/app.component.html` খুলে উপরোক্ত shell/nav/card/footer স্নিপেট পেস্ট করুন।
 3) (দ্রুত স্টাইল) `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>` যোগ করুন।
 4) টার্মিনাল: `ng serve` → Chrome এ http://localhost:4200 খুলে UI দেখুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) নতুন প্রজেক্ট বানান  
+   ```bash
+   ng new hms-demo --standalone --routing --style=scss
+   cd hms-demo
+   ```
+2) এই রিপো থেকে ডেমো কপি করুন (VS Code drag/drop বা টার্মিনাল):  
+   `angular-fundamentals/demos/hms-appointments/*` → `hms-demo/src/app/`
+3) Tailwind দ্রুত যোগ (CDN): `src/index.html` `<head>` এ  
+   `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve` চালান, ব্রাউজার: http://localhost:4200  
+   - `/` = Login (topic 12 guard)  
+   - `/dashboard` = SPA shell/cards (topic 1)  
+   - `/patients` = RxJS search + binding (topics 3,10)  
+   - `/patients/:id` = resolver (topic 12)  
+   - `/appointments` = reactive form + Http/interceptor + OnPush (topics 8,9,11)
+5) ফোল্ডার স্ট্রাকচার (প্রজেক্ট ভিউ):
+```
+hms-demo/
+  src/
+    main.ts
+    index.html
+    app/
+      app.routes.ts
+      app.component.ts/html
+      pages/ (login, dashboard, patients, patient-details, appointments)
+      services/ (patient.service.ts, bed.service.ts)
+      guards/ (auth.guard.ts)
+      resolvers/ (patient.resolver.ts)
+      interceptors/ (auth.interceptor.ts)
+      components/ (badge, card, patient-card)
+```

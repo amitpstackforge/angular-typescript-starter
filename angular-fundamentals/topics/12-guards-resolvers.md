@@ -76,3 +76,12 @@ export class PatientResolver implements Resolve<Observable<any>> {
 2) `auth.guard.ts` ও `patient.resolver.ts` ফাইল বানিয়ে কোড পেস্ট করুন; `app.routes.ts` এ guard/resolver অ্যাটাচ করুন।
 3) Login UI স্নিপেট একটি কম্পোনেন্টে রাখুন; রুট `/` এ সেট করুন, protected route `/patients/:id` এ guard+resolver ব্যবহার করুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome এ টোকেন ছাড়া প্রবেশ করলে redirect হয় কিনা এবং resolver data template এ আসে কিনা দেখুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `angular-fundamentals/demos/hms-appointments/*` → `src/app/` কপি করুন।
+3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve`;  
+   - `/` (login) → টোকেন সেট হয়  
+   - `/patients/:id` → guard+resolver কাজ করে, data দেখায়  
+   - `/appointments` → interceptor সহ protected route

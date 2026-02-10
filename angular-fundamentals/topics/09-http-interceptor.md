@@ -73,3 +73,9 @@ export const authInterceptorFn: HttpInterceptorFn = (req,next)=> {
 2) `auth.interceptor.ts` বানিয়ে interceptor fn পেস্ট করুন; `main.ts` এ `provideHttpClient(withInterceptors([authInterceptorFn]))` যোগ করুন।
 3) যে কম্পোনেন্টে কল করবেন, সেখানে loading bar/error toast/JWT badge স্নিপেট টেমপ্লেটে রাখুন; TS এ `loading`/`error` ফ্ল্যাগ সেট করুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে হেডার দেখুন, error হলে toast দেখা যায় কিনা টোকেন মুছে টেস্ট করুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) কপি: `angular-fundamentals/demos/hms-appointments/*` → `src/app/`
+3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve`; `/appointments` এ interceptor-সহ POST, `/patients` এ debounced GET দেখুন। Network ট্যাবে Authorization হেডার; টোকেন মুছে error toast দেখুন।

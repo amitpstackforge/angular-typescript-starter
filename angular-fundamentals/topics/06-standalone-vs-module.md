@@ -52,6 +52,18 @@ bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });
 
 ## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
 1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `src/main.ts` খুলে `bootstrapApplication(...)` ফরম্যাট রাখুন; `app.routes.ts` এর lazy route নিশ্চিত করুন।
+3) Tailwind CDN `src/index.html` এ যোগ করুন।
+4) `ng serve`; Chrome Network ট্যাবে lazy chunk load নিশ্চিত করুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) প্রজেক্ট: `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) কপি: `angular-fundamentals/demos/hms-appointments/*` → `src/app/`
+3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve`; `/appointments` পেজে standalone components + lazy routing কাজ করছে কিনা দেখুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
 2) `src/main.ts` খুলে `bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });` রাখুন।
 3) `app.routes.ts` এ lazy route যোগ করুন (উদাহরণ: pharmacy loadComponent); সংশ্লিষ্ট কম্পোনেন্ট ফাইল তৈরি করুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে lazy chunk লোড হচ্ছে কিনা যাচাই করুন, UI স্টাইল দেখুন।

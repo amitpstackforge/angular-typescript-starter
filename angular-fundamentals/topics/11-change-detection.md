@@ -60,3 +60,9 @@ this.beds$ = this.beds$.pipe(map(list => [...list, newBed]));
 2) কম্পোনেন্টে `changeDetection: ChangeDetectionStrategy.OnPush` সেট করুন; Observable data expose করুন।
 3) Template এ async pipe list/refresh/trackBy স্নিপেট পেস্ট করুন।
 4) Tailwind CDN যোগ করে `ng serve`; service থেকে data replace করলে UI আপডেট হচ্ছে কিনা এবং DOM reuse (TrackBy) হচ্ছে কিনা Chrome Elements এ যাচাই করুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `angular-fundamentals/demos/hms-appointments/*` → `src/app/` কপি।
+3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve`; `/patients` ও `/appointments` পেজে async pipe + OnPush আপডেট ও trackBy আচরণ দেখুন (Elements প্যানেল DOM নোড স্টেবল থাকে)।

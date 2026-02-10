@@ -61,3 +61,20 @@ styles: [`.btn{ @apply bg-blue-600 text-white rounded px-3 py-2; }`]
 2) `src/app/` এ নতুন ফাইল বানান: `badge.component.ts`, `card.component.ts` ইত্যাদি; স্নিপেটগুলো পেস্ট করুন।
 3) `app.component.ts` এ `imports`-এ তৈরি কম্পোনেন্টগুলো যোগ করুন; `app.component.html` এ ব্যবহার করুন।
 4) `src/index.html` এ Tailwind CDN যোগ করুন (বা proper build); `ng serve` চালিয়ে Chrome এ ফলাফল দেখুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) প্রজেক্ট তৈরি:  
+   ```bash
+   ng new hms-demo --standalone --routing --style=scss
+   cd hms-demo
+   ```
+2) এই রিপো থেকে কপি: `angular-fundamentals/demos/hms-appointments/*` → `src/app/`
+3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) রান: `ng serve` → http://localhost:4200  
+   - কম্পোনেন্ট ব্যবহার: `components/` ফোল্ডারের badge/card/patient-card প্রস্তুত আছে।
+5) স্ট্রাকচার দেখুন:
+```
+src/app/components/ (badge, card, patient-card)
+src/app/pages/ (login, dashboard, patients, patient-details, appointments)
+src/app/services/, guards/, resolvers/, interceptors/
+```

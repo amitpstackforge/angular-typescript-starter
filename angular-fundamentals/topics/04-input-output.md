@@ -69,3 +69,11 @@ get classes() { return this.tone==='green' ? 'bg-emerald-100 text-emerald-700' :
 2) `src/app/patient-card.component.ts` তৈরি করে child স্নিপেট পেস্ট করুন (`standalone:true` রাখুন)।
 3) `app.component.ts` এ `imports:[PatientCardComponent, CommonModule]` যোগ করে parent টেমপ্লেটে child ব্যবহার করুন এবং handlers লিখুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome কনসোলে Output event লগ দেখা ও স্টাইল পরীক্ষা করুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) প্রজেক্ট বানান: `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) কপি: `angular-fundamentals/demos/hms-appointments/*` → `src/app/`
+3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve`  
+   - `/patients` এ `hms-patient-card` কম্পোনেন্টের Input/Output কাজ করছে কিনা দেখুন (Discharge/Edit লগ হবে)।
+5) ট্রি: `components/patient-card.component.ts`, `pages/patients.component.ts` ইতিমধ্যেই ওয়্যার করা।

@@ -70,3 +70,9 @@ addSymptom() { this.form.controls.symptoms.push(new FormControl('')); }
 2) আপনার কম্পোনেন্টে `imports:[CommonModule, ReactiveFormsModule]` দিন; TS এ ফর্ম অবজেক্ট ও helper ফাংশন পেস্ট করুন।
 3) একই কম্পোনেন্টের template এ গ্রিড ফর্ম/এরর/FormArray/spinner স্নিপেট পেস্ট করুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome এ ফর্ম পূরণ/খালি রেখে disable/error/spinner আচরণ দেখুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `angular-fundamentals/demos/hms-appointments/*` → `src/app/` কপি করুন।
+3) Tailwind CDN `src/index.html` এ যোগ করুন।
+4) `ng serve`; `/appointments` পেজে reactive form, errors, spinner, disable state—all observable। Network ট্যাবে POST (jsonplaceholder) দেখুন।

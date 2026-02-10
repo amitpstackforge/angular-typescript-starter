@@ -59,3 +59,10 @@ constructor(@Inject(API_URL) api:string, private http:HttpClient) {}
 2) `src/app/patient.service.ts` বানিয়ে সার্ভিস স্নিপেট পেস্ট করুন; `providedIn: 'root'` রাখুন।
 3) যে কম্পোনেন্টে ব্যবহার করবেন, `constructor(private patientService: PatientService)` ইনজেক্ট করে template এ `patients$ | async` বাউন্ড করুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে GET কল দেখুন, UI তে data render ও status pill দেখুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `angular-fundamentals/demos/hms-appointments/*` কপি করুন `src/app/` এ।
+3) Tailwind CDN যোগ করুন: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve` → `/patients` ও `/appointments` পেজে সার্ভিস + Http + DI এর কল Network ট্যাবে দেখুন।
+5) ট্রি: `services/patient.service.ts`, `services/bed.service.ts` ইতিমধ্যে ওয়্যার্ড; কম্পোনেন্টে inject করা আছে।

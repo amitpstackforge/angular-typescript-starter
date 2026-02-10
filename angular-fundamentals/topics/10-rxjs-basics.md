@@ -57,3 +57,9 @@ fromEvent(button,'click').pipe(debounceTime(300)).subscribe(() => save());
 2) কম্পোনেন্টে `imports:[CommonModule, ReactiveFormsModule, HttpClientModule]` যোগ করুন; TS এ search control + results$ কোড পেস্ট করুন।
 3) Template এ input + তালিকা + loading টেক্সট স্নিপেট পেস্ট করুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে debounced GET কল দেখুন, UI তে ফলাফল আপডেট নিশ্চিত করুন।
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `angular-fundamentals/demos/hms-appointments/*` → `src/app/` কপি।
+3) Tailwind CDN: `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve`; `/patients` এ টাইপ করে RxJS debounce+switchMap ফলাফল, loading টেক্সট ও Network কল দেখুন।

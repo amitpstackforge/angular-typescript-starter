@@ -70,3 +70,11 @@ trackById = (_: number, item: any) => item.id;
 2) আপনার কম্পোনেন্টে `imports: [CommonModule, FormsModule]` যোগ করুন।
 3) `app.component.html` এ এই binding/directive স্নিপেটগুলো পেস্ট করুন; `app.component.ts` এ `beds`, `search`, `doSearch()` ডিফাইন করুন।
 4) Tailwind CDN যোগ করে `ng serve`; Chrome এ UI টেস্ট করুন (ngIf/ngFor/ngSwitch, disabled বাটন)। 
+
+## সম্পূর্ণ রানযোগ্য ডেমো (সব টপিক টেস্ট করুন)
+1) `ng new hms-demo --standalone --routing --style=scss` && `cd hms-demo`
+2) `angular-fundamentals/demos/hms-appointments/*` কপি করে `src/app/` এ পেস্ট।
+3) Tailwind CDN যোগ করুন: `src/index.html` `<head>` এ `<script src="https://cdn.tailwindcss.com"></script>`
+4) `ng serve` → http://localhost:4200  
+   - `/patients` পেজে `ngFor/ngClass`, debounced search, directive টেস্ট করুন।
+5) ফোল্ডার ট্রি: `components/`, `pages/`, `services/`, `guards/`, `resolvers/`, `interceptors/` সব প্রস্তুত।
