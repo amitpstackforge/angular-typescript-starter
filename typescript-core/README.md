@@ -19,6 +19,7 @@
 - [09) async/await + Promise basics](topics/09-async-await-promise.md)
 - [10) Pharmacy scenario: inventory + literal unions](topics/10-pharmacy-inventory.md)
 - [11) Lab scenario: report workflow + exhaustive checks](topics/11-lab-reports.md)
+- [12) Tailwind UI স্নিপেট (HMS-ready)](topics/12-tailwind-hms-snippets.md)
 
 ## দ্রুত রিভিশন
 - প্রতিটি ফাইলে ছোট ধারণা + উদাহরণ + interview প্রশ্ন আছে।
