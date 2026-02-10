@@ -51,3 +51,9 @@ fromEvent(button,'click').pipe(debounceTime(300)).subscribe(() => save());
 ```
 
 **UI test hint**: search inputে টাইপ করুন, Network ট্যাবে debounced call (dummyjson) হচ্ছে কিনা দেখুন; observable result আপডেট হলে তালিকা rerender হচ্ছে কিনা লক্ষ্য করুন। loading flag true করলে “Loading...” টেক্সট দেখুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) কম্পোনেন্টে `imports:[CommonModule, ReactiveFormsModule, HttpClientModule]` যোগ করুন; TS এ search control + results$ কোড পেস্ট করুন।
+3) Template এ input + তালিকা + loading টেক্সট স্নিপেট পেস্ট করুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে debounced GET কল দেখুন, UI তে ফলাফল আপডেট নিশ্চিত করুন।

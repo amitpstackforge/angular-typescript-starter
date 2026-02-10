@@ -63,3 +63,9 @@ get classes() { return this.tone==='green' ? 'bg-emerald-100 text-emerald-700' :
 ```
 
 **UI test hint**: Parent টেমপ্লেটে `console.log($event)` দিয়ে Output বাউন্ড করুন; ব্রাউজারে Discharge/Edit ক্লিক করলে কনসোলে id/অবজেক্ট দেখা যাবে। Tailwind ক্লাস দেখে স্টাইল যাচাই করুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `src/app/patient-card.component.ts` তৈরি করে child স্নিপেট পেস্ট করুন (`standalone:true` রাখুন)।
+3) `app.component.ts` এ `imports:[PatientCardComponent, CommonModule]` যোগ করে parent টেমপ্লেটে child ব্যবহার করুন এবং handlers লিখুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome কনসোলে Output event লগ দেখা ও স্টাইল পরীক্ষা করুন।

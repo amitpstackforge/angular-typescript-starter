@@ -64,3 +64,9 @@ trackById = (_: number, item: any) => item.id;
 ```
 
 **UI test hint**: `FormsModule` ইমপোর্ট করে কম্পোনেন্টে উপরের টেমপ্লেট দিন; DevTools → Toggle `search` মডেল (Component tab) আর বাটনের disabled state একসাথে দেখুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) আপনার কম্পোনেন্টে `imports: [CommonModule, FormsModule]` যোগ করুন।
+3) `app.component.html` এ এই binding/directive স্নিপেটগুলো পেস্ট করুন; `app.component.ts` এ `beds`, `search`, `doSearch()` ডিফাইন করুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome এ UI টেস্ট করুন (ngIf/ngFor/ngSwitch, disabled বাটন)। 

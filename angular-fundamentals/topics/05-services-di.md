@@ -53,3 +53,9 @@ constructor(@Inject(API_URL) api:string, private http:HttpClient) {}
 ```
 
 **UI test hint**: Component template এ `{{ patientService.base }}` বাউন্ড করুন; `ng serve` চালিয়ে Network ট্যাবে service call (dummyjson) দেখুন, এবং DevTools Components প্যানেলে provider tree পরখ করুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `src/app/patient.service.ts` বানিয়ে সার্ভিস স্নিপেট পেস্ট করুন; `providedIn: 'root'` রাখুন।
+3) যে কম্পোনেন্টে ব্যবহার করবেন, `constructor(private patientService: PatientService)` ইনজেক্ট করে template এ `patients$ | async` বাউন্ড করুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে GET কল দেখুন, UI তে data render ও status pill দেখুন।

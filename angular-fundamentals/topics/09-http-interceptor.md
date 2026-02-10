@@ -67,3 +67,9 @@ export const authInterceptorFn: HttpInterceptorFn = (req,next)=> {
 ```
 
 **UI test hint**: DevTools Network এ Authorization হেডার যাচ্ছে কিনা দেখুন; টোকেন মুছে `ng serve` রিফ্রেশে guarded API তে error toast উঠছে কিনা দেখে নিন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `auth.interceptor.ts` বানিয়ে interceptor fn পেস্ট করুন; `main.ts` এ `provideHttpClient(withInterceptors([authInterceptorFn]))` যোগ করুন।
+3) যে কম্পোনেন্টে কল করবেন, সেখানে loading bar/error toast/JWT badge স্নিপেট টেমপ্লেটে রাখুন; TS এ `loading`/`error` ফ্ল্যাগ সেট করুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে হেডার দেখুন, error হলে toast দেখা যায় কিনা টোকেন মুছে টেস্ট করুন।

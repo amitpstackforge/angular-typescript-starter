@@ -64,3 +64,9 @@ addSymptom() { this.form.controls.symptoms.push(new FormControl('')); }
 ```
 
 **UI test hint**: ReactiveFormsModule ইমপোর্ট করে ফর্মটি বসান; invalid state-এ Submit বাটন disable হচ্ছে কিনা আর error মেসেজ দেখাচ্ছে কিনা ব্রাউজারে দেখুন। Tailwind spinner দেখা যায় কিনা `loading=true` করে কনসোল থেকে ট্রিগার করুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) আপনার কম্পোনেন্টে `imports:[CommonModule, ReactiveFormsModule]` দিন; TS এ ফর্ম অবজেক্ট ও helper ফাংশন পেস্ট করুন।
+3) একই কম্পোনেন্টের template এ গ্রিড ফর্ম/এরর/FormArray/spinner স্নিপেট পেস্ট করুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome এ ফর্ম পূরণ/খালি রেখে disable/error/spinner আচরণ দেখুন।

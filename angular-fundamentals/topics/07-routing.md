@@ -55,3 +55,9 @@ ngOnInit() {
 ```
 
 **UI test hint**: Router devtools বা ব্রাউজার URL বারে `/patients/3?tab=lab` খুলুন; ব্যাজ/ট্যাব ক্লাস স্যুইচ হচ্ছে ও lazy chunk নেটওয়ার্কে লোড হচ্ছে কিনা দেখুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `app.routes.ts` এ navbar অনুযায়ী path যোগ করুন; param route `/patients/:id` এবং lazy route উদাহরণ পেস্ট করুন।
+3) `app.component.html` এ nav এবং তালিকা/ট্যাব স্নিপেট পেস্ট করুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome এ URL পরিবর্তন করে param/query টেস্ট করুন, Network এ lazy chunk দেখুন।

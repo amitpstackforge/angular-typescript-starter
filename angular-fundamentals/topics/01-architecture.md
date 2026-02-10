@@ -44,3 +44,9 @@
 ```
 
 **UI test hint**: Tailwind CDN যোগ করে (index.html) `ng serve` চালিয়ে ব্রাউজারে ন্যাভ/কার্ড/ফুটার দেখা যায়; DevTools থেকে router-outlet DOM verify করুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `src/app/app.component.html` খুলে উপরোক্ত shell/nav/card/footer স্নিপেট পেস্ট করুন।
+3) (দ্রুত স্টাইল) `src/index.html` এ `<script src="https://cdn.tailwindcss.com"></script>` যোগ করুন।
+4) টার্মিনাল: `ng serve` → Chrome এ http://localhost:4200 খুলে UI দেখুন।

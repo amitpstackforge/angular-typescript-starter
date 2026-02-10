@@ -70,3 +70,9 @@ export class PatientResolver implements Resolve<Observable<any>> {
 ```
 
 **UI test hint**: টোকেন ছাড়া `/patients/1` এ গেলে guard redirect করছে কিনা দেখুন; resolver ডেটা `route.data` থেকে এসে টেমপ্লেটে দেখানো হচ্ছে কিনা Network + console এ verify করুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `auth.guard.ts` ও `patient.resolver.ts` ফাইল বানিয়ে কোড পেস্ট করুন; `app.routes.ts` এ guard/resolver অ্যাটাচ করুন।
+3) Login UI স্নিপেট একটি কম্পোনেন্টে রাখুন; রুট `/` এ সেট করুন, protected route `/patients/:id` এ guard+resolver ব্যবহার করুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome এ টোকেন ছাড়া প্রবেশ করলে redirect হয় কিনা এবং resolver data template এ আসে কিনা দেখুন।

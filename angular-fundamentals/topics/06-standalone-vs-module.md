@@ -49,3 +49,9 @@ bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });
 - Standalone root + feature module lazy works; Tailwind classes usable in both.
 
 **UI test hint**: Standalone `ShellComponent` bootstrap করে `ng serve`; Lazy routeে (Network tab) JS chunk লোড হচ্ছে কিনা দেখুন, এবং Tailwind ক্লাস সহ লেজি কম্পোনেন্ট রেন্ডার হচ্ছে কিনা চোখে দেখুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) `src/main.ts` খুলে `bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });` রাখুন।
+3) `app.routes.ts` এ lazy route যোগ করুন (উদাহরণ: pharmacy loadComponent); সংশ্লিষ্ট কম্পোনেন্ট ফাইল তৈরি করুন।
+4) Tailwind CDN যোগ করে `ng serve`; Chrome Network ট্যাবে lazy chunk লোড হচ্ছে কিনা যাচাই করুন, UI স্টাইল দেখুন।

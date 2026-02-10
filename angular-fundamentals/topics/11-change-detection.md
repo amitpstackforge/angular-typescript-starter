@@ -54,3 +54,9 @@ this.beds$ = this.beds$.pipe(map(list => [...list, newBed]));
 ```
 
 **UI test hint**: Patients observable আপডেট করতে service থেকে নতুন array emit করুন; OnPush হওয়ায় async pipe UI আপডেট হবে। TrackBy থাকলে ngFor DOM key স্থির আছে কিনা Elements-এ দেখুন।
+
+## কীভাবে VS Code + Chrome এ দ্রুত চালাবেন
+1) `ng new hms-demo --standalone --routing --style=scss` → `cd hms-demo`
+2) কম্পোনেন্টে `changeDetection: ChangeDetectionStrategy.OnPush` সেট করুন; Observable data expose করুন।
+3) Template এ async pipe list/refresh/trackBy স্নিপেট পেস্ট করুন।
+4) Tailwind CDN যোগ করে `ng serve`; service থেকে data replace করলে UI আপডেট হচ্ছে কিনা এবং DOM reuse (TrackBy) হচ্ছে কিনা Chrome Elements এ যাচাই করুন।
