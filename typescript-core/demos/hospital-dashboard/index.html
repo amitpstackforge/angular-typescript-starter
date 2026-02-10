@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hospital Dashboard (TypeScript Core Demo)</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 24px; background: #f6f8fb; }
+    h1 { margin-bottom: 8px; }
+    .card { background: #fff; padding: 16px; margin-bottom: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.06); }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .row .card { flex: 1 1 280px; }
+    button { padding: 8px 14px; border: none; background: #2563eb; color: white; border-radius: 6px; cursor: pointer; }
+    button:hover { background: #1d4ed8; }
+    ul { padding-left: 20px; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 12px; background: #e0f2fe; color: #0ea5e9; margin-left: 6px; }
+  </style>
+</head>
+<body>
+  <h1>Hospital Dashboard</h1>
+  <p>TypeScript core কনসেপ্ট দিয়ে তৈরি ছোট ডেমো। Console খুলে লগ দেখুন।</p>
+
+  <div class="row">
+    <div class="card">
+      <h3>Bed Status</h3>
+      <div id="bed-status">Loading...</div>
+    </div>
+    <div class="card">
+      <h3>Patients</h3>
+      <ul id="patient-list"></ul>
+      <button id="admit-btn">Admit New Patient</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Billing</h3>
+    <div id="billing"></div>
+  </div>
+
+  <script type="module" src="./dist/app.js"></script>
+</body>
+</html>
