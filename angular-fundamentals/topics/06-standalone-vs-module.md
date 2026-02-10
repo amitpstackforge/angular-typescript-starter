@@ -27,3 +27,23 @@ bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });
 
 **Interview Q**
 - Standalone lazy route config কীভাবে করবেন? (route object-এ `loadComponent`)।
+
+## Tailwind-ready HMS examples (Standalone vs Module)
+1) **Standalone shell**  
+```ts
+bootstrapApplication(ShellComponent, { providers: [provideRouter(routes)] });
+```
+2) **Lazy load standalone component**  
+```ts
+{ path: 'beds', loadComponent: () => import('./beds.component').then(m => m.BedsComponent) }
+```
+3) **Card component import (standalone)**  
+```ts
+@Component({standalone:true, imports:[CommonModule, BadgeComponent], ...})
+```
+4) **Legacy module declaration (contrast)**  
+```ts
+@NgModule({ declarations:[BedsComponent], imports:[CommonModule], exports:[BedsComponent] })
+```
+5) **Hybrid tip**  
+- Standalone root + feature module lazy works; Tailwind classes usable in both.

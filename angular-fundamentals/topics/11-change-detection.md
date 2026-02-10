@@ -28,3 +28,27 @@ export class BedListComponent {
 **Interview Q**
 - markForCheck বনাম detectChanges?
 - OnPush + mutable object pitfalls?
+
+## Tailwind-ready HMS examples (OnPush)
+1) **Async pipe list**  
+```html
+<ul>
+  <li *ngFor="let bed of beds$ | async" class="py-1">{{ bed.id }} - {{ bed.status }}</li>
+></ul>
+```
+2) **Immutable update pattern**  
+```ts
+this.beds$ = this.beds$.pipe(map(list => [...list, newBed]));
+```
+3) **Manual refresh button**  
+```html
+<button class="btn w-auto px-3 py-2" (click)="refresh()">Refresh</button>
+```
+4) **TrackBy performance**  
+```html
+<li *ngFor="let p of patients$ | async; trackBy: trackById" class="py-2 border-b">{{p.name}}</li>
+```
+5) **ChangeDetectionStrategy.OnPush declaration**  
+```ts
+@Component({ changeDetection: ChangeDetectionStrategy.OnPush, ... })
+```
