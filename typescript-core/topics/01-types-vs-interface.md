@@ -40,7 +40,7 @@ type PatientCare = { ward: string };
 
 > ক্রোম DevTools Console এ কপি-পেস্ট করুন (ES2020+ ধরেই লেখা)।
 
-1) **TypeScript এ Interface extends Interface কীভাবে কাজ করে? **
+1) **TypeScript এ Interface extends Interface কীভাবে কাজ করে?**
 ```ts
 interface Patient { id: string; name: string; }
 interface EmergencyPatient extends Patient { triageLevel: 1 | 2 | 3; }
