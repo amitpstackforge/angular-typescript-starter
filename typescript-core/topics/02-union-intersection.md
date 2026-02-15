@@ -31,7 +31,7 @@ function admit(entity: Patient | InPatient) {
 
 ## ব্রাউজারে কনসোল টেস্ট (Union & Intersection)
 
-1) **Union narrowing with `in`**
+1) **TypeScript এ Union Narrowing কীভাবে কাজ করে? (`in` operator সহ)**
 ```ts
 type WalkIn = { kind: 'walkin'; name: string };
 type Scheduled = { kind: 'scheduled'; name: string; slot: string };
@@ -44,7 +44,7 @@ function label(appt: Appointment) {
 console.log(label({ kind: 'scheduled', name: 'Rima', slot: '10:30' }));
 ```
 
-2) **Intersection combine properties**
+2)  **Intersection (&) দিয়ে একাধিক Type Combine করা**
 ```ts
 type Billing = { amount: number };
 type Identified = { id: string };
@@ -53,7 +53,8 @@ const bp: BillablePatient = { id: 'P10', amount: 5000 };
 console.log('Billable patient:', bp);
 ```
 
-3) **Function accepting union**
+3) **Union Type দিয়ে Function Parameter Handle করা**
+
 ```ts
 type StaffRole = 'doctor' | 'nurse' | 'admin';
 function assign(role: StaffRole) {
@@ -66,7 +67,8 @@ function assign(role: StaffRole) {
 console.log(assign('nurse'));
 ```
 
-4) **Intersection for mixins**
+4) **TypeScript এ Mixins বুঝুন Intersection দিয়ে**
+
 ```ts
 type Timestamped = { createdAt: Date };
 type Bed = { id: string; type: 'ICU' | 'GENERAL' };
