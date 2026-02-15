@@ -40,7 +40,7 @@ type PatientCare = { ward: string };
 
 > ক্রোম DevTools Console এ কপি-পেস্ট করুন (ES2020+ ধরেই লেখা)।
 
-1) **interface extends interface**
+1) **TypeScript এ Interface extends Interface কীভাবে কাজ করে? **
 ```ts
 interface Patient { id: string; name: string; }
 interface EmergencyPatient extends Patient { triageLevel: 1 | 2 | 3; }
@@ -48,7 +48,7 @@ const e: EmergencyPatient = { id: 'P1', name: 'Rima', triageLevel: 2 };
 console.log('Emergency patient:', e);
 ```
 
-2) **type union vs interface** (union শুধু type দিয়ে)
+2) **TypeScript এ Union কেন শুধু Type দিয়ে হয়? Interface দিয়ে কেন নয়?** 
 ```ts
 type Doctor = { id: string; name: string; specialty: 'cardio' | 'er' };
 type Nurse  = { id: string; name: string; ward: string };
@@ -60,7 +60,7 @@ const team: Staff[] = [
 console.log('Staff union:', team);
 ```
 
-3) **Declaration merging (interface)** বনাম **no merge (type)**
+3) **Declaration Merging কী? Interface merge হয় কিন্তু Type কেন হয় না?**
 ```ts
 interface Bed { id: string; type: 'ICU' | 'GENERAL'; }
 interface Bed { occupied?: boolean; } // merge works
@@ -71,7 +71,7 @@ type Pharmacy = { name: string; };
 // type Pharmacy = { code: string; }; // uncomment করলে error: duplicate identifier
 ```
 
-4) **Class implements interface (not type)**
+4) **Class কেন Interface implement করে, Type না? TypeScript Explained**
 ```ts
 interface Repo<T> { upsert(entity: T): void; all(): T[]; }
 class InMemoryRepo<T extends { id: string }> implements Repo<T> {
