@@ -40,6 +40,50 @@
 9. CSS performance: layout thrash এড়াতে কী করবেন? heavy shadow/filters এর প্রভাব?
 10. prefers-reduced-motion কী? কিভাবে হ্যান্ডল করবেন?
 
+## দ্রুত চেকলিস্ট সিলেবাস (সংক্ষিপ্ত আইটেম)
+- 🟢 CSS Basics: what/why, inline/internal/external, selectors, colors (hex/rgb/hsl), units (px/%/em/rem/vh/vw), comments।
+- 🟡 Selectors (very important): class/id, grouping, universal, descendant/child/sibling, attribute, pseudo-classes (`:hover/:focus/:nth-child`), pseudo-elements (`::before/::after`), specificity।
+- 🔵 Box model: content/padding/border/margin, `box-sizing`, margin collapse।
+- 🟣 Display & positioning: display (block/inline/inline-block/none), position (static/relative/absolute/fixed/sticky), z-index, stacking context।
+- 🟠 Typography: font-family/size/weight/line-height/letter-spacing, text-align/transform/decoration, web fonts (Google Fonts)।
+- 🔴 Background & borders: background-color/image/size/position, gradients, border styles/radius, box-shadow, text-shadow।
+- 🟤 Flexbox (must master): main vs cross axis, justify/align, direction/wrap, grow/shrink/basis, gap।
+- ⚫ CSS Grid (must master): template rows/cols, `fr`, gap, grid lines, auto-fit/auto-fill, implicit vs explicit grid।
+- 🟩 Responsive design: media queries, breakpoints, mobile-first, fluid layouts, responsive type/images, `clamp()`।
+- 🟦 Transitions & animations: transition, transform (scale/rotate/translate), keyframes, perf tips।
+- 🟪 Modern CSS: variables, `calc()/clamp()/min()/max()`, aspect-ratio, object-fit, scroll behavior/snap, container queries।
+- 🟫 Advanced layout/effects: shapes, clip-path, filters, backdrop-filter, blend modes, custom scrollbars।
+- 🟨 Accessibility in CSS: focus styles, prefers-reduced-motion, high-contrast, color contrast practices।
+- 🟧 Performance & best practices: avoid specificity wars, BEM, reusable utilities, optimize bundle, critical CSS, architecture (SMACSS/ITCSS)।
+- 🟥 Preprocessors (optional): Sass/SCSS, nesting, mixins, functions, partials।
+- 🟦 Frameworks (later): Tailwind CSS once core mastered।
+
+## Topics (ordered, copy the files under `topics/`)
+01) `topics/01-html-semantics-aria.md` — Semantics, landmarks, basic a11y  
+02) `topics/02-forms-accessibility.md` — Forms, validation, aria-live  
+03) `topics/03-css-layout-flex-grid.md` — Flex/Grid basics for layout shell  
+04) `topics/04-css-architecture-theme.md` — Tokens, BEM vs utility, theming  
+05) `topics/05-responsive-media.md` — clamp(), auto-fit grid, responsive media  
+06) `topics/06-components-utilities.md` — Buttons/badges + utility patterns  
+07) `topics/07-performance-tooling.md` — Critical CSS, responsive images, fonts  
+08) `topics/08-testing-debugging.md` — DevTools, Lighthouse/axe, smoke tests  
+09) `topics/09-css-basics.md` — CSS syntax, inline/internal/external, colors/units  
+10) `topics/10-selectors-specificity.md` — Selectors, pseudo, specificity ladder  
+11) `topics/11-box-model.md` — Padding/border/margin, box-sizing, collapse  
+12) `topics/12-display-position.md` — Display modes, positioning, z-index  
+13) `topics/13-typography.md` — Font stacks, size/weight/line-height, webfonts  
+14) `topics/14-background-borders.md` — Backgrounds, gradients, shadows, radius  
+15) `topics/15-flexbox.md` — Flexbox deep-dive (grow/shrink/basis, alignment)  
+16) `topics/16-grid.md` — CSS Grid deep-dive, areas, auto-fit/fill  
+17) `topics/17-responsive-design.md` — Media queries, fluid layouts, responsive type/images  
+18) `topics/18-transitions-animations.md` — Transition/transform, keyframes, motion safety  
+19) `topics/19-modern-css.md` — Variables, calc/min/max/clamp, aspect-ratio, scroll snap  
+20) `topics/20-advanced-effects.md` — Clip-path, filters, blend, backdrop-filter  
+21) `topics/21-accessibility-css.md` — Focus styles, reduced motion/contrast  
+22) `topics/22-performance-best.md` — Specificity hygiene, critical CSS, architecture  
+23) `topics/23-preprocessors.md` — Sass/SCSS basics, mixins, partials  
+24) `topics/24-css-frameworks.md` — Tailwind intro, when/why, purge/JIT note  
+
 ## ফোল্ডার গাইড
 - `topics/` — ছোট ছোট Markdown নোট (বাংলা ব্যাখ্যা + English কোড)।
 - `demos/` — রানযোগ্য উদাহরণ; hospital data দিয়ে।

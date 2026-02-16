@@ -56,6 +56,49 @@ footer { grid-area: footer; padding: 1rem; background: #0f172a; color: #fff; }
 - `gap` flex ও grid দুটোতেই কাজ করে; `flex: 1 1 180px` সহজ responsive কার্ড।
 - Desktop-first বা mobile-first—Grid টেম্পলেটে `minmax()` ও মিডিয়া কুয়েরি দিয়ে সিদ্ধান্ত নিন।
 
+**আরো উদাহরণ (beginner → advanced)**
+1) Beginner — flex row nav
+```html
+<nav style="display:flex; gap:8px;">
+  <a>Home</a><a>Beds</a><a>Pharmacy</a>
+</nav>
+```
+2) Beginner — flex wrap cards
+```html
+<div style="display:flex; gap:12px; flex-wrap:wrap;">
+  <div style="flex:1 1 160px; border:1px solid #ccc;">ICU-1</div>
+  <div style="flex:1 1 160px; border:1px solid #ccc;">ICU-2</div>
+</div>
+```
+3) Intermediate — grid shell areas
+```html
+<div style="display:grid;grid-template-areas:'h h''s m''f f';grid-template-columns:220px 1fr;min-height:100vh;">
+  <header style="grid-area:h">Header</header>
+  <aside style="grid-area:s">Sidebar</aside>
+  <main style="grid-area:m">Main</main>
+  <footer style="grid-area:f">Footer</footer>
+</div>
+```
+4) Intermediate — auto-fit cards
+```html
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;">
+  <article class="card">Bed A</article>
+  <article class="card">Bed B</article>
+</div>
+```
+5) Advanced — sticky header + scroll area
+```html
+<style>
+.layout { display:grid; grid-template-rows:64px 1fr; height:100vh; }
+.top { position:sticky; top:0; background:#0f172a; color:#fff; padding:12px; }
+.scroll { overflow:auto; padding:12px; }
+</style>
+<div class="layout">
+  <div class="top">Sticky Ops Bar</div>
+  <div class="scroll">...long bed list...</div>
+</div>
+```
+
 **Try it**
 - Sidebar মোবাইলে উপরে নিয়ে আসুন (`grid-template-areas` সুইচ) — 600px ব্রেকপয়েন্টে।
 - Cards-কে দুই-কলাম গ্রিড করুন (`grid-template-columns: repeat(auto-fit, minmax(200px,1fr))`) এবং Flex version এর পার্থক্য নোট করুন।

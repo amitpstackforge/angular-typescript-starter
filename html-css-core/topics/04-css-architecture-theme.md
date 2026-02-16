@@ -55,6 +55,35 @@ toggle.addEventListener('click', () => {
 - BEM নামকরণ specificity কম ও পড়তে সহজ; utility-first (যেমন `flex`, `gap-4`) দ্রুত কিন্তু স্প্রেডেড—প্রসঙ্গে বেছে নিন।
 - Global leakage রোধে: লোয়ার specificity, কম্পোনেন্ট রুট ক্লাস, এবং reset/normalize ব্যবহার করুন।
 
+**আরো উদাহরণ (beginner → advanced)**
+1) Beginner — root color tokens
+```css
+:root { --accent: #2563eb; }
+.link { color: var(--accent); }
+```
+2) Beginner — BEM button variants
+```css
+.btn { padding:8px 12px; border-radius:8px; }
+.btn--primary { background:#2563eb; color:#fff; }
+.btn--danger { background:#ef4444; color:#fff; }
+```
+3) Intermediate — utility class set
+```css
+.u-flex { display:flex; }
+.u-gap-sm { gap:8px; }
+.u-center { align-items:center; }
+```
+4) Intermediate — theme switch by data attr
+```css
+[data-theme="dark"] { --card: #111827; --text:#e2e8f0; }
+.card { background:var(--card); color:var(--text); }
+```
+5) Advanced — scope via container class
+```css
+.pharmacy { --accent: #f97316; }
+.pharmacy .btn--primary { background: var(--accent); }
+```
+
 **Try it**
 - Pharmacy সতর্কতা কার্ডে `bed-card--warning` ভ্যারিয়েন্ট বানান (`border-color: amber`), থিমেও কাজ করতে হবে।
 - CSS variables দিয়ে spacing scale (`--s-1`, `--s-2`) বানিয়ে `.card` মার্জিন/প্যাডিং সেখানে রেফার করুন।

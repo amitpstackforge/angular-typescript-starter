@@ -54,6 +54,40 @@
 - `prefers-reduced-motion` দিয়ে মাইক্রো-মোশন safe করা ইন্টারভিউতে plus point।
 - Focus-visible ব্যবহার করুন—keyboard users এর জন্য স্পষ্ট ফোকাস রিং দিন।
 
+**আরো উদাহরণ (beginner → advanced)**
+1) Beginner — pill badge
+```html
+<span style="display:inline-flex;align-items:center;padding:4px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;">ICU</span>
+```
+2) Beginner — utility stack
+```html
+<div style="display:flex;gap:8px;flex-wrap:wrap;">
+  <button class="btn btn--primary">Admit</button>
+  <button class="btn btn--ghost">Cancel</button>
+</div>
+```
+3) Intermediate — icon button a11y
+```html
+<button class="btn btn--ghost" aria-label="Refresh beds">
+  &#x21bb;
+</button>
+```
+4) Intermediate — disabled style
+```css
+.btn[disabled] { opacity: 0.55; cursor: not-allowed; }
+```
+5) Advanced — utility for stack/cluster
+```css
+.stack { display:flex; flex-direction:column; gap:12px; }
+.cluster { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+```
+```html
+<div class="stack">
+  <div class="cluster"><span class="badge">HR 88</span><span class="badge">BP 120/80</span></div>
+  <div class="cluster"><button class="btn btn--primary">Save</button></div>
+</div>
+```
+
 **Try it**
 - Badge এ status ভ্যারিয়েন্ট যোগ করুন (`badge--warn`, `badge--ok`) রঙ ভ্যারিয়েবল দিয়ে।
 - Button-এর disabled স্টেটে opacity + cursor স্টাইল যোগ করুন।

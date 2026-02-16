@@ -52,6 +52,28 @@ p  { font-size: var(--step-0); }
 - `auto-fit + minmax()` সহজে responsive grid দেয়, gap বজায় থাকে।
 - `aspect-ratio` ও `object-fit` দিয়ে ছবি বিকৃতি রোধ; placeholder সাইজ consistent রাখুন।
 
+**আরো উদাহরণ (beginner → advanced)**
+1) Beginner — simple media query
+```css
+@media (max-width: 600px) { body { padding: 12px; } }
+```
+2) Beginner — fluid heading with clamp
+```css
+h1 { font-size: clamp(1.6rem, 2vw + 1rem, 2.4rem); }
+```
+3) Intermediate — auto-fit cards
+```css
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; }
+```
+4) Intermediate — aspect-ratio utility
+```css
+.thumb { width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 8px; }
+```
+5) Advanced — container width clamp
+```css
+.page { width: min(1100px, 92vw); margin: 0 auto; }
+```
+
 **Try it**
 - টাইপ স্কেল `--step-2` যোগ করে হেডার বড় করুন, কিন্তু max সীমা রাখুন।
 - 900px এর নিচে গ্রিডকে এক কলামে নামিয়ে আনুন; 600px এর নিচে padding কমান।

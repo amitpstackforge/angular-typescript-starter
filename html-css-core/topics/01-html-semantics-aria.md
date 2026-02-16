@@ -71,6 +71,44 @@
 - ফর্ম ফিল্ডে label + `id/for` বাধ্যতামূলক; `aria-describedby` দিয়ে হিন্ট/এরর যুক্ত করুন।
 - List বা টেবিল ডেটা উপস্থাপন করতে সঠিক সেম্যান্টিক ট্যাগ ব্যবহার করুন—এতে a11y + SEO দুটোই লাভবান।
 
+**আরো উদাহরণ (beginner → advanced)**
+1) Beginner — মিনিমাল ল্যান্ডমার্ক
+```html
+<header>CityCare</header>
+<main><h1>Patients</h1></main>
+<footer>&copy; 2026</footer>
+```
+2) Beginner — label/for ও hint
+```html
+<label for="pname">Name</label>
+<input id="pname" />
+<small id="pname-hint">Full legal name</small>
+```
+3) Intermediate — definition list for vitals
+```html
+<dl>
+  <dt>Heart Rate</dt><dd>88</dd>
+  <dt>SpO2</dt><dd>96%</dd>
+</dl>
+```
+4) Intermediate — table with caption
+```html
+<table>
+  <caption>Bed Status</caption>
+  <thead><tr><th>Bed</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td>ICU-1</td><td>Occupied</td></tr>
+    <tr><td>ICU-2</td><td>Empty</td></tr>
+  </tbody>
+</table>
+```
+5) Advanced — visually hidden text for icon buttons
+```html
+<button aria-label="Open pharmacy panel">
+  <svg aria-hidden="true" viewBox="0 0 16 16">...</svg>
+</button>
+```
+
 **Try it**
 - ফর্মে একটি “Symptoms” textarea যোগ করুন এবং `aria-describedby` দিয়ে হিন্ট দিন।
 - `Beds` সেকশনকে টেবিল হিসেবে লিখুন (কলাম: Bed, Status, Last cleaned) সঠিক `<table>` সেম্যান্টিক দিয়ে।

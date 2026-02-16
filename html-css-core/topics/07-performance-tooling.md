@@ -32,6 +32,33 @@
 - `font-display: swap` FOIT এড়ায়; variable fonts ফাইল সংখ্যা কমায়।
 - Lighthouse → Performance + A11y স্কোর শেয়ার করতে পারা স্টার্টআপ ইন্টারভিউতে শক্তি।
 
+**আরো উদাহরণ (beginner → advanced)**
+1) Beginner — defer JS
+```html
+<script src="/app.js" defer></script>
+```
+2) Beginner — preload font
+```html
+<link rel="preload" as="font" href="/fonts/Inter.var.woff2" type="font/woff2" crossorigin>
+```
+3) Intermediate — lazy iframe
+```html
+<iframe src="beds.html" loading="lazy" title="Beds overview"></iframe>
+```
+4) Intermediate — compression hint
+```bash
+npx imagemin assets/* --out-dir=public/img
+```
+5) Advanced — inline critical CSS
+```html
+<style>
+/* critical above-the-fold */
+body { margin:0; font-family:system-ui; }
+.topbar { position:sticky; top:0; }
+</style>
+<link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all'">
+```
+
 **Try it**
 - Pharmacy পেজে `picture` ট্যাগ দিয়ে webp+fallback যোগ করুন।
 - main.css split করে `critical.css` ইনলাইন করুন; বাকি `media="print"` হ্যাক এড়িয়ে rel=preload + onload সুইচ ব্যবহার করুন।
