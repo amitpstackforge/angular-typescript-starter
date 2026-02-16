@@ -1,9 +1,5 @@
 নিচে **Angular + TypeScript interview crack করার জন্য (Beginner/B.Tech fresher, India startup)** একদম **স্টার্ট-টু-ফিনিশ টপিক লিস্ট + কীভাবে পড়বে + কী প্রশ্ন আসে**—সব **বাংলায়** দিলাম। এটা ধরে 2–4 সপ্তাহ সিরিয়াসলি করলে বেশিরভাগ fresher Angular interview cover হয়ে যাবে।
 
-> নতুন: `ecmascript-core/` ফোল্ডারে ES1 → ES2024 (ES15) বাংলা নোট + হাসপাতাল উদাহরণ যোগ করা আছে—JS ফাউন্ডেশন ঝালিয়ে নিতে ব্যবহার করুন।  
-> নতুন: **Angular-focused Frontend Roadmap (English)** দেখুন: `docs/roadmaps/angular.md`  
-> নতুন: **Angular ফ্রন্টএন্ড রোডম্যাপ (বাংলা)** দেখুন: `docs/roadmaps/angular-roadmap-bn.md`
-
 ---
 
 ## 1) JavaScript/TypeScript বেসিক (Angular এর আগে MUST)
@@ -211,4 +207,4 @@ Day 14: Mock interview Q&A + build a mini project
 
 ---
 
-আপনি চাইলে আমি আপনার জন্য **একটা “Angular Fresher Interview Question Bank (বাংলা + উত্তর + কোড)”** বানিয়ে দেব—**topic-wise** (TS, Components, Forms, RxJS, Routing) এবং সাথে **mini project starter code structure**ও দিয়ে  দেব।
+আপনি চাইলে আমি আপনার জন্য **একটা “Angular Fresher Interview Question Bank (বাংলা + উত্তর + কোড)”** বানিয়ে দেব—**topic-wise** (TS, Components, Forms, RxJS, Routing) এবং সাথে **mini project starter code structure**ও দিয়ে দেব।
