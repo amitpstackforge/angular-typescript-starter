@@ -1,0 +1,28 @@
+# HTML & CSS Core — Examples Index
+
+Quick jump table to the “আরো উদাহরণ (beginner → advanced)” sections. Each topic has 10 copy‑pastable snippets.
+
+- [01 — HTML semantics & ARIA](topics/01-html-semantics-aria.md#আরো-উদাহরণ-beginner--advanced)
+- [02 — Forms, validation & ARIA](topics/02-forms-accessibility.md#আরো-উদাহরণ-beginner--advanced)
+- [03 — CSS layout: flex & grid](topics/03-css-layout-flex-grid.md#আরো-উদাহরণ-beginner--advanced)
+- [04 — CSS architecture & theme](topics/04-css-architecture-theme.md#আরো-উদাহরণ-beginner--advanced)
+- [05 — Responsive media](topics/05-responsive-media.md#আরো-উদাহরণ-beginner--advanced)
+- [06 — Components & utilities](topics/06-components-utilities.md#আরো-উদাহরণ-beginner--advanced)
+- [07 — Performance & tooling](topics/07-performance-tooling.md#আরো-উদাহরণ-beginner--advanced)
+- [08 — Testing & debugging](topics/08-testing-debugging.md#আরো-উদাহরণ-beginner--advanced)
+- [09 — CSS basics](topics/09-css-basics.md#আরো-উদাহরণ-beginner--advanced)
+- [10 — Selectors & specificity](topics/10-selectors-specificity.md#আরো-উদাহরণ-beginner--advanced)
+- [11 — Box model](topics/11-box-model.md#আরো-উদাহরণ-beginner--advanced)
+- [12 — Display & positioning](topics/12-display-position.md#আরো-উদাহরণ-beginner--advanced)
+- [13 — Typography](topics/13-typography.md#আরো-উদাহরণ-beginner--advanced)
+- [14 — Backgrounds & borders](topics/14-background-borders.md#আরো-উদাহরণ-beginner--advanced)
+- [15 — Flexbox deep-dive](topics/15-flexbox.md#আরো-উদাহরণ-beginner--advanced)
+- [16 — CSS Grid deep-dive](topics/16-grid.md#আরো-উদাহরণ-beginner--advanced)
+- [17 — Responsive design](topics/17-responsive-design.md#আরো-উদাহরণ-beginner--advanced)
+- [18 — Transitions & animations](topics/18-transitions-animations.md#আরো-উদাহরণ-beginner--advanced)
+- [19 — Modern CSS](topics/19-modern-css.md#আরো-উদাহরণ-beginner--advanced)
+- [20 — Advanced effects](topics/20-advanced-effects.md#আরো-উদাহরণ-beginner--advanced)
+- [21 — Accessibility in CSS](topics/21-accessibility-css.md#আরো-উদাহরণ-beginner--advanced)
+- [22 — Performance best practices](topics/22-performance-best.md#আরো-উদাহরণ-beginner--advanced)
+- [23 — Preprocessors](topics/23-preprocessors.md#আরো-উদাহরণ-beginner--advanced)
+- [24 — CSS frameworks](topics/24-css-frameworks.md#আরো-উদাহরণ-beginner--advanced)
