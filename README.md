@@ -207,4 +207,4 @@ Day 14: Mock interview Q&A + build a mini project
 
 ---
 
-আপনি চাইলে আমি আপনার জন্য **একটা “Angular Fresher Interview Question Bank (বাংলা + উত্তর + কোড)”** বানিয়ে দেব—**topic-wise** (TS, Components, Forms, RxJS, Routing) এবং সাথে **mini project starter code structure**ও দিয়ে দেব।
+আপনি চাইলে আমি আপনার জন্য **একটা “Angular Fresher Interview Question Bank (বাংলা + উত্তর + কোড)”** বানিয়ে দেব—**topic-wise** (TS, Components, Forms, RxJS, Routing) এবং সাথে **mini project starter code structure**ও দিয়ে  দেব।
