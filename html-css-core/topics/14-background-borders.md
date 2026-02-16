@@ -47,6 +47,26 @@
 ```css
 h1 { text-shadow: 0 1px 2px rgba(0,0,0,0.12); }
 ```
+6) Border radius per corner
+```css
+.card { border-radius: 16px 16px 4px 4px; }
+```
+7) Outline ring without layout shift
+```css
+.focusable:focus-visible { outline: 3px solid #22c55e; outline-offset: 3px; }
+```
+8) Inset shadow for pressed button
+```css
+.btn:active { box-shadow: inset 0 2px 6px rgba(0,0,0,0.2); }
+```
+9) Background-clip text effect
+```css
+.gradient-text { background: linear-gradient(90deg,#06b6d4,#6366f1); -webkit-background-clip: text; color: transparent; }
+```
+10) Border image slice
+```css
+.fancy { border: 12px solid transparent; border-image: url('frame.png') 30 round; }
+```
 
 **Try it**
 - Hero-তে background-blend-mode ব্যবহার করে গ্রেডিয়েন্ট + ছবি মিক্স করুন।

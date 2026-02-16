@@ -52,6 +52,30 @@ console.log(results.violations);
 ```ts
 await expect(page).toHaveScreenshot('beds.png', { fullPage: true });
 ```
+6) Intermediate — CSS outline debug helper
+```css
+* { outline: 1px solid rgba(255,0,0,0.08); }
+```
+7) Intermediate — grid/flex overlays in DevTools
+```md
+Chrome DevTools → Layout panel → check "Display area info" for Grid/Flex; toggle overlay.
+```
+8) Advanced — network throttling check
+```bash
+chromium --remote-debugging-port=9222 --user-data-dir=/tmp/chrome --proxy-server="direct://" --proxy-bypass-list="*" --force-fieldtrials="Throttling/enable"
+```
+9) Advanced — performance mark/measure
+```js
+performance.mark('render-start');
+// render UI
+performance.mark('render-end');
+performance.measure('render', 'render-start', 'render-end');
+console.log(performance.getEntriesByName('render')[0].duration);
+```
+10) Advanced — emulate reduced motion in Playwright
+```ts
+await page.emulateMedia({ reducedMotion: 'reduce' });
+```
 
 **Try it**
 - Layout overlay দিয়ে cards gap নোট করুন; পরে CSS gap পরিবর্তন করে ফল দেখুন।

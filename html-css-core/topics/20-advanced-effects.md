@@ -46,6 +46,32 @@
 ```css
 .avatar { clip-path: circle(50%); }
 ```
+6) Gradient border via mask
+```css
+.gradient-border {
+  position: relative;
+  border: 2px solid transparent;
+  background: linear-gradient(#fff,#fff) padding-box, linear-gradient(120deg,#06b6d4,#6366f1) border-box;
+}
+```
+7) Conic gradient gauge
+```css
+.gauge { width:140px; aspect-ratio:1; border-radius:50%; background: conic-gradient(#22c55e 0 72%, #e2e8f0 0); }
+```
+8) Masked fade edges
+```css
+.scroll { -webkit-mask-image: linear-gradient(180deg, transparent, #000 10%, #000 90%, transparent); }
+```
+9) Grayscale toggle (e.g., outage)
+```css
+.muted { filter: grayscale(1); }
+```
+10) @supports fallback for blur
+```css
+@supports not (backdrop-filter: blur(6px)) {
+  .frost { background: rgba(15,23,42,0.7); }
+}
+```
 
 **Try it**
 - Hero সেকশনে diagonal clip-path যোগ করুন; মোবাইলে ফ্যালব্যাক হিসেবে square রাখুন।

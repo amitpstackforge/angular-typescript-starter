@@ -58,6 +58,26 @@ body { margin:0; font-family:system-ui; }
 </style>
 <link rel="stylesheet" href="/css/main.css" media="print" onload="this.media='all'">
 ```
+6) Intermediate — preconnect to CDN
+```html
+<link rel="preconnect" href="https://cdn.example.com" crossorigin>
+```
+7) Intermediate — `content-visibility` for long lists
+```css
+.patient-card { content-visibility: auto; contain-intrinsic-size: 300px; }
+```
+8) Advanced — reduce repaint with will-change hint
+```css
+.drawer { will-change: transform; }
+```
+9) Advanced — network cache header (express)
+```js
+app.use('/assets', express.static('assets', { maxAge: '7d', etag: true }));
+```
+10) Advanced — measure bundle via `source-map-explorer`
+```bash
+npx source-map-explorer dist/main.*.js
+```
 
 **Try it**
 - Pharmacy পেজে `picture` ট্যাগ দিয়ে webp+fallback যোগ করুন।

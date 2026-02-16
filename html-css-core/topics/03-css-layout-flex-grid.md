@@ -98,6 +98,28 @@ footer { grid-area: footer; padding: 1rem; background: #0f172a; color: #fff; }
   <div class="scroll">...long bed list...</div>
 </div>
 ```
+6) Intermediate — equal-height cards with grid auto-rows
+```html
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); grid-auto-rows:1fr; gap:12px; }
+.cards article { padding:12px; border:1px solid #d0d7de; }
+```
+7) Intermediate — flexbox for action bar spacing
+```html
+.actions { display:flex; gap:8px; justify-content:space-between; align-items:center; }
+```
+8) Advanced — grid with named lines
+```html
+.shell { display:grid; grid-template-columns:[sidebar] 240px [content] 1fr [end]; }
+```
+9) Advanced — clamp() container width + center
+```html
+.page { width:clamp(320px, 90vw, 1100px); margin:0 auto; }
+```
+10) Advanced — CSS grid masonry-ish via `grid-auto-flow: dense`
+```html
+.feed { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); grid-auto-flow:dense; gap:10px; }
+.wide { grid-column:span 2; }
+```
 
 **Try it**
 - Sidebar মোবাইলে উপরে নিয়ে আসুন (`grid-template-areas` সুইচ) — 600px ব্রেকপয়েন্টে।

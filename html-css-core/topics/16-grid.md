@@ -53,6 +53,29 @@ header{grid-area:h;} aside{grid-area:s;} main{grid-area:m;} footer{grid-area:f;}
 .auto-fill { grid-template-columns: repeat(auto-fill, minmax(180px,1fr)); }
 .auto-fit  { grid-template-columns: repeat(auto-fit,  minmax(180px,1fr)); }
 ```
+6) Gap shorthand
+```css
+.grid { display:grid; gap: 12px 20px; } /* row col */
+```
+7) Full-bleed hero within centered page
+```css
+.page { display:grid; grid-template-columns: 1fr minmax(0, 960px) 1fr; }
+.page > * { grid-column: 2; }
+.hero { grid-column: 1 / -1; }
+```
+8) Track repeat shortcut
+```css
+.stats { display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+```
+9) Justify/align content
+```css
+.board { display:grid; justify-content:center; align-content:start; height:400px; }
+```
+10) Subgrid (Firefox/modern)
+```css
+.list { display:grid; grid-template-columns: 1fr 1fr; }
+.item { display:grid; grid-template-columns: subgrid; grid-column: span 2; }
+```
 
 **Try it**
 - Bed dashboardে header/sidebar/main/footer grid areas তৈরি করুন।

@@ -51,6 +51,30 @@
 ```css
 .card:nth-child(2) { align-self: stretch; }
 ```
+6) Order for priority
+```css
+.cta { order: -1; } /* moves before siblings */
+```
+7) Fixed + fluid combo
+```css
+.shell { display:flex; gap:12px; }
+.shell .sidebar { flex:0 0 220px; }
+.shell .main { flex:1 1 auto; }
+```
+8) Space-between nav
+```css
+.nav { display:flex; justify-content:space-between; align-items:center; }
+```
+9) Align-content for wrapped rows
+```css
+.tiles { display:flex; flex-wrap:wrap; align-content: start; gap: 12px; height: 300px; }
+```
+10) Sticky footer with flex column
+```css
+body { min-height:100vh; display:flex; flex-direction:column; }
+main { flex:1; }
+footer { margin-top:auto; }
+```
 
 **Try it**
 - Toolbar-এ একটি সার্চ ইনপুট `flex:1` দিয়ে বাকি বোতাম স্থির রাখুন।

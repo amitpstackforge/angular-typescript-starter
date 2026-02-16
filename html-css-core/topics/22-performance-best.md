@@ -46,6 +46,28 @@ module.exports = { content: ['./**/*.html'], css: ['./dist/styles.css'] };
 ```html
 <link rel="stylesheet" href="print.css" media="print">
 ```
+6) Use :where to keep specificity low
+```css
+:where(h1, h2, h3) { margin: 0; }
+```
+7) Sprite sheet for icons
+```css
+.icon { width:16px; height:16px; background:url('/img/sprite.svg') no-repeat; background-size: 200px 200px; }
+.icon--alert { background-position: -20px -40px; }
+```
+8) Containment for widgets
+```css
+.widget { contain: content; }
+```
+9) Font-display swap
+```css
+@font-face { font-family:'Inter'; src:url('/Inter.woff2') format('woff2'); font-display: swap; }
+```
+10) Lightweight shadow token
+```css
+:root { --shadow-sm: 0 4px 10px rgba(15,23,42,0.08); }
+.card { box-shadow: var(--shadow-sm); }
+```
 
 **Try it**
 - main.css থেকে অপ্রয়োজনীয় ক্লাস কেটে PurgeCSS চালিয়ে সাইজ তুলুন।

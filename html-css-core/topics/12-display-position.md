@@ -44,6 +44,27 @@
 .modal { position: fixed; z-index: 100; }
 .modal * { position: relative; z-index: 1; } /* avoid unexpected overlay under transform parents */
 ```
+6) Inline-block gap fix
+```css
+nav a { display:inline-block; margin-right: -4px; }
+```
+7) Absolute center shortcut
+```css
+.center { position:absolute; inset:0; display:grid; place-items:center; }
+```
+8) `display: contents` for layout-only wrapper
+```css
+.row { display: contents; } /* children participate in parent grid/flex */
+```
+9) Overlay with pointer-events none
+```css
+.glass { position:fixed; inset:0; background:rgba(15,23,42,.4); pointer-events:none; }
+```
+10) Sticky inside scrolling container
+```css
+.panel { max-height: 60vh; overflow:auto; }
+.panel h3 { position: sticky; top: 0; background:#fff; }
+```
 
 **Try it**
 - Bed list টেবিলের হেডার sticky করুন; scroll করলে উপরে থাকে কিনা দেখুন।

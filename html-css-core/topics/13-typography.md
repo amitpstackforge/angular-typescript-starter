@@ -44,6 +44,26 @@ a:hover { text-decoration: underline; text-decoration-thickness: 2px; }
 ```css
 .nums { font-variant-numeric: tabular-nums; }
 ```
+6) Hyphenation for long words
+```css
+p { hyphens: auto; }
+```
+7) Text wrap balance
+```css
+h1 { text-wrap: balance; }
+```
+8) Fluid letter-spacing
+```css
+.hero-title { letter-spacing: clamp(0.02em, 0.4vw, 0.08em); }
+```
+9) Font weight axis for variable fonts
+```css
+.heavy { font-variation-settings: "wght" 750; }
+```
+10) Text truncation
+```css
+.ellipsis { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 220px; }
+```
 
 **Try it**
 - Lede paragraph-এর line-height 1.8 করে দেখুন পড়া কেমন লাগে।

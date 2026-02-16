@@ -50,6 +50,28 @@ h1 { color: #2563eb; }       /* element selector */
 ```css
 .hero { min-height: 70vh; padding: 4vw; }
 ```
+6) rem-based sizing
+```css
+body { font-size: 16px; }
+button { padding: 0.75rem 1.25rem; }
+```
+7) calc for layout
+```css
+.sidebar { width: calc(30% - 12px); }
+```
+8) border-box reset
+```css
+*, *::before, *::after { box-sizing: border-box; }
+```
+9) CSS variable starter
+```css
+:root { --brand: #0ea5e9; }
+.link { color: var(--brand); }
+```
+10) Shorthand vs longhand
+```css
+.card { margin: 16px; padding: 12px 16px 20px 16px; }
+```
 
 **Try it**
 - একই এলিমেন্টে element + class + id রুল লিখে specificity ফল দেখুন।

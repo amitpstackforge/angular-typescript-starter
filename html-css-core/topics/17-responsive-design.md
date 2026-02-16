@@ -44,6 +44,26 @@ img { max-width: 100%; height: auto; }
 ```css
 .section { padding: clamp(1rem, 2vw, 2rem); }
 ```
+6) Orientation-specific rule
+```css
+@media (orientation: landscape) { .hero { min-height: 60vh; } }
+```
+7) Responsive gap via clamp
+```css
+.grid { display:grid; gap: clamp(10px, 2vw, 24px); }
+```
+8) Safe-area padding for notch devices
+```css
+header { padding-top: max(16px, env(safe-area-inset-top)); }
+```
+9) Container query (modern)
+```css
+@container (min-width: 500px) { .card { display:grid; grid-template-columns: 1fr 1fr; } }
+```
+10) Reduce motion for mobile
+```css
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }
+```
 
 **Try it**
 - Intake form দুই কলাম (>=768px) থেকে এক কলাম (মোবাইল) করুন।

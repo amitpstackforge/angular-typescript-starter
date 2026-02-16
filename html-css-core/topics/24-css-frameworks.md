@@ -48,6 +48,29 @@ module.exports = { theme: { extend: { colors: { accent: '#2563eb' } } } };
 ```js
 module.exports = { content: ['./index.html'], mode: 'jit' };
 ```
+6) @apply to extract component
+```css
+.btn { @apply inline-flex items-center gap-2 px-3 py-2 rounded-md text-white bg-blue-600 hover:bg-blue-700; }
+```
+7) Custom container width
+```js
+module.exports = { theme: { container: { center: true, padding: '1rem', screens: { lg: '1100px' } } } };
+```
+8) Forms plugin enable
+```js
+module.exports = { plugins: [require('@tailwindcss/forms')] };
+```
+9) Utility merge with clsx (React)
+```jsx
+import clsx from 'clsx';
+<button className={clsx('btn', disabled && 'opacity-50 cursor-not-allowed')}>Save</button>
+```
+10) DaisyUI theme swap example
+```html
+<html data-theme="corporate">
+  <button class="btn btn-primary">Admit</button>
+</html>
+```
 
 **Try it**
 - CDN ডেমোকে স্থানীয় Tailwind JIT সেটআপে নিয়ে যান (content paths ঠিক করে)।

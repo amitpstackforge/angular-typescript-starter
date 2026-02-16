@@ -46,6 +46,26 @@ p { margin: 16px 0; }
 ```css
 .input:focus { outline: 2px solid #2563eb; outline-offset: 2px; }
 ```
+6) Min/max width guard
+```css
+.card { width: 100%; max-width: 420px; }
+```
+7) Negative margin nudge
+```css
+.banner { margin: -8px -16px 0; padding: 12px 16px; }
+```
+8) Box shadow doesn’t affect layout
+```css
+.panel { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+```
+9) Overflow to contain children
+```css
+.avatar-stack { overflow: hidden; border-radius: 999px; }
+```
+10) Inline-block gap awareness
+```css
+.tag { display: inline-block; margin-right: -4px; }
+```
 
 **Try it**
 - একই width-এ content-box বনাম border-box তুলনা করুন।

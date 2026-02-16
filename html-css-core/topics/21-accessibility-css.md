@@ -50,6 +50,27 @@ button:focus-visible, a:focus-visible { box-shadow: 0 0 0 3px rgba(37,99,235,0.3
 .skip { position:absolute; left:-999px; }
 .skip:focus { left: 12px; top:12px; background:#fff; padding:8px; }
 ```
+6) `:target` highlight for in-page links
+```css
+:target { outline: 3px solid #22c55e; outline-offset: 4px; }
+```
+7) sr-only utility
+```css
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); }
+```
+8) Form error border + message spacing
+```css
+.field[aria-invalid="true"] { border-color: #ef4444; }
+.field + .error { color:#b91c1c; margin-top:4px; }
+```
+9) Prefers-reduced-transparency fallback
+```css
+@media (prefers-reduced-transparency: reduce) { .glass { background: #0f172a; backdrop-filter: none; } }
+```
+10) Larger tap targets on mobile
+```css
+@media (max-width: 640px) { button, a { min-height: 44px; padding: 12px 14px; } }
+```
 
 **Try it**
 - Intake form-এ skip link যোগ করুন (main-এ জাম্প করে), focus-visible স্টাইল দিন।

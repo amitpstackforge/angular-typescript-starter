@@ -80,8 +80,34 @@ toggle.addEventListener('click', () => {
 ```
 5) Advanced — scope via container class
 ```css
-.pharmacy { --accent: #f97316; }
-.pharmacy .btn--primary { background: var(--accent); }
+ .pharmacy { --accent: #f97316; }
+ .pharmacy .btn--primary { background: var(--accent); }
+```
+6) Intermediate — cascade-friendly reset using `:where`
+```css
+:where(h1,h2,h3,p) { margin: 0; }
+.card p { margin-block: 8px; }
+```
+7) Advanced — component-level token fallback
+```css
+.card { --card-bg: var(--surface, #fff); background: var(--card-bg); }
+:root { --surface: #f8fafc; }
+```
+8) Advanced — cascade layers to keep utilities low priority
+```css
+@layer reset, base, components, utilities;
+@layer utilities { .u-mb-2 { margin-bottom:8px; } }
+```
+9) Advanced — CSS variable alias map
+```css
+:root { --space-1: 4px; --space-2: 8px; }
+.stack { display:grid; gap: var(--space-2); }
+```
+10) Advanced — auto dark mode fallback
+```css
+@media (prefers-color-scheme: dark) {
+  :root { --surface: #0f172a; --text:#e2e8f0; }
+}
 ```
 
 **Try it**

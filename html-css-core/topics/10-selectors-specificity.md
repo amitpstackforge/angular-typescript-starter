@@ -49,6 +49,26 @@ label + input { margin-top: 4px; }
 .card .highlight { color: #2563eb; } /* wins over element rule */
 #main .card .highlight { color: #dc2626; }   /* id wins */
 ```
+6) Attribute selector
+```css
+input[readonly] { background: #f3f4f6; }
+```
+7) :not filter
+```css
+.nav a:not(.active) { color: #475569; }
+```
+8) :is with low specificity
+```css
+:is(h1, h2, h3) { margin-bottom: 0.4em; }
+```
+9) :where zero specificity helper
+```css
+.card :where(h3, p) { margin: 0; }
+```
+10) :has parent selector (modern)
+```css
+.field:has(input:invalid) { border-color: #ef4444; }
+```
 
 **Try it**
 - Pharmacy টেবিলে attribute selector `td[data-low="true"]` লাল করুন।

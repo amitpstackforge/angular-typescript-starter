@@ -87,6 +87,36 @@
   <div class="cluster"><button class="btn btn--primary">Save</button></div>
 </div>
 ```
+6) Intermediate — focus-visible utility
+```css
+.focus-ring:focus-visible { outline:2px solid #2563eb; outline-offset:2px; }
+```
+7) Intermediate — toggle switch markup
+```html
+<label class="toggle">
+  <input type="checkbox" aria-label="Enable alerts" />
+  <span></span>
+</label>
+```
+8) Advanced — skeleton loader
+```css
+.skeleton { background:linear-gradient(90deg,#e5e7eb 25%,#f3f4f6 37%,#e5e7eb 63%); background-size:400% 100%; animation: shimmer 1.2s infinite; }
+@keyframes shimmer { 100% { background-position: -100% 0; } }
+```
+9) Advanced — tooltip with data attribute
+```html
+<button data-tip="Edit patient" class="btn btn--ghost">✎</button>
+```
+```css
+[data-tip]{ position:relative; }
+[data-tip]::after{ content:attr(data-tip); position:absolute; inset:auto auto 110% 50%; transform:translateX(-50%); background:#111827; color:#fff; padding:4px 8px; border-radius:6px; opacity:0; pointer-events:none; transition:opacity .15s; }
+[data-tip]:hover::after,[data-tip]:focus-visible::after{ opacity:1; }
+```
+10) Advanced — modal shell
+```html
+<dialog id="assign"><p>Assign bed?</p><button onclick="assign.close()">Close</button></dialog>
+<button onclick="assign.showModal()">Open</button>
+```
 
 **Try it**
 - Badge এ status ভ্যারিয়েন্ট যোগ করুন (`badge--warn`, `badge--ok`) রঙ ভ্যারিয়েবল দিয়ে।

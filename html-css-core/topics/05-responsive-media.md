@@ -67,11 +67,41 @@ h1 { font-size: clamp(1.6rem, 2vw + 1rem, 2.4rem); }
 ```
 4) Intermediate — aspect-ratio utility
 ```css
-.thumb { width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 8px; }
+ .thumb { width:100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 8px; }
 ```
 5) Advanced — container width clamp
 ```css
 .page { width: min(1100px, 92vw); margin: 0 auto; }
+```
+6) Intermediate — responsive picture element
+```html
+<picture>
+  <source media="(min-width:900px)" srcset="ward-large.jpg" />
+  <img src="ward-small.jpg" alt="Ward view" style="width:100%; aspect-ratio: 16/9;" />
+</picture>
+```
+7) Intermediate — `sizes` with `srcset`
+```html
+<img
+  src="bed-640.jpg"
+  srcset="bed-320.jpg 320w, bed-640.jpg 640w, bed-960.jpg 960w"
+  sizes="(max-width:600px) 90vw, 400px"
+  alt="ICU bed" />
+```
+8) Advanced — responsive embed with `aspect-ratio`
+```css
+.video { aspect-ratio: 16/9; width:100%; }
+.video iframe { width:100%; height:100%; border:0; }
+```
+9) Advanced — clamp spacing token
+```css
+.section { padding: clamp(16px, 4vw, 48px); }
+```
+10) Advanced — `@media (prefers-reduced-data)` for lighter assets
+```css
+@media (prefers-reduced-data: reduce) {
+  .hero { background-image: none; }
+}
 ```
 
 **Try it**

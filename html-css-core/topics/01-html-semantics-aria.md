@@ -105,8 +105,41 @@
 5) Advanced — visually hidden text for icon buttons
 ```html
 <button aria-label="Open pharmacy panel">
-  <svg aria-hidden="true" viewBox="0 0 16 16">...</svg>
+ <svg aria-hidden="true" viewBox="0 0 16 16">...</svg>
 </button>
+```
+6) Intermediate — landmark order for screen reader
+```html
+<header>...</header>
+<main>
+  <section aria-labelledby="labs"><h2 id="labs">Lab Results</h2></section>
+</main>
+<footer>Contacts</footer>
+```
+7) Intermediate — breadcrumb with `aria-current`
+```html
+<nav aria-label="Breadcrumb">
+  <ol>
+    <li><a href="/">Home</a></li>
+    <li><a href="/patients">Patients</a></li>
+    <li aria-current="page">P-101</li>
+  </ol>
+</nav>
+```
+8) Advanced — `aria-live` error summary
+```html
+<div role="alert" aria-live="assertive">
+  Please fill insurance ID.
+</div>
+```
+9) Advanced — `aria-label` for icon-only inputs
+```html
+<input type="search" aria-label="Search patients" placeholder="Search" />
+```
+10) Advanced — `role="status"` for async updates
+```html
+<p id="sync" role="status" aria-live="polite">Syncing...</p>
+<script>setTimeout(()=>sync.textContent='Updated from server',1200);</script>
 ```
 
 **Try it**

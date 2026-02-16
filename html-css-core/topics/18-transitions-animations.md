@@ -50,6 +50,27 @@
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; }
 }
 ```
+6) Multiple-property transition
+```css
+.card { transition: transform 160ms ease, box-shadow 160ms ease; }
+```
+7) Custom easing curve
+```css
+.fab { transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1); }
+```
+8) Delayed tooltip fade
+```css
+.tip { opacity:0; transition: opacity 120ms ease 120ms; }
+.btn:hover .tip { opacity:1; }
+```
+9) Animation-fill-mode
+```css
+.toast { animation: slide-in 180ms ease forwards; }
+```
+10) Step animation (progress)
+```css
+.progress { animation: steps(5) fill-bar 2s infinite; }
+```
 
 **Try it**
 - Admit বাটনে hover lift + focus outline রাখুন; reduced-motion এ lift বন্ধ করুন।

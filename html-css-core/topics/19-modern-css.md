@@ -47,6 +47,28 @@ html { scroll-behavior: smooth; }
   .card { display: grid; grid-template-columns: 1fr 1fr; }
 }
 ```
+6) accent-color for form controls
+```css
+input[type="checkbox"] { accent-color: #22c55e; }
+```
+7) `:has()` parent styling
+```css
+.field:has(input:invalid) { border-color: #ef4444; }
+```
+8) `color-mix()` experimental
+```css
+.pill { background: color-mix(in srgb, #0ea5e9 70%, white); }
+```
+9) View transitions toggle (Chrome)
+```css
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 180ms; }
+```
+10) `@supports` guard
+```css
+@supports (backdrop-filter: blur(10px)) {
+  .glass { backdrop-filter: blur(10px); }
+}
+```
 
 **Try it**
 - Hero image aspect-ratio 16/9 বনাম 4/3 তুলনা করুন।

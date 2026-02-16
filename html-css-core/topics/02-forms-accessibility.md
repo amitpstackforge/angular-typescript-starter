@@ -87,6 +87,37 @@ f.addEventListener('submit', ev => {
 });
 </script>
 ```
+6) Intermediate — show invalid field list
+```html
+const invalid = [...form.elements].filter(el => !el.checkValidity());
+alert('Fix: ' + invalid.map(el => el.name).join(', '));
+```
+7) Intermediate — inputmask via pattern + title
+```html
+<input type="tel" pattern="\\d{3}-\\d{3}-\\d{4}" title="123-456-7890" required />
+```
+8) Advanced — custom validity message
+```html
+const pid = document.querySelector('#pid');
+pid.addEventListener('input', () => {
+  pid.setCustomValidity(pid.value.startsWith('P-') ? '' : 'Prefix P- required');
+});
+```
+9) Advanced — `aria-invalid` toggle
+```html
+input.addEventListener('input', () => {
+  input.toggleAttribute('aria-invalid', !input.checkValidity());
+});
+```
+10) Advanced — disable submit while loading
+```html
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  submit.disabled = true; submit.textContent = 'Saving...';
+  await fakeSave();
+  submit.disabled = false; submit.textContent = 'Submit';
+});
+```
 
 **Try it**
 - Patient ID এর জন্য `pattern="P-\\d{3}"` দিন; ইনভ্যালিড হলে লাল বার্তা দেখান।
