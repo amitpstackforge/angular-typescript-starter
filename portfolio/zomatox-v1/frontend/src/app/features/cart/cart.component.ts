@@ -9,6 +9,38 @@ import { CartStore } from '../../core/cart.store';
   template: `
   <h1 class="text-xl font-bold mb-3">Cart</h1>
 
+
+  <!-- Loading -->
+<div *ngIf="cartStore.loading()" 
+     class="flex items-center p-4 mb-4 text-blue-800 border border-blue-300 rounded-lg bg-blue-50"
+     role="alert">
+     
+  <svg class="flex-shrink-0 w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 4h2v6H9V4zm0 8h2v2H9v-2z"/>
+  </svg>
+
+  <span class="text-sm font-medium">
+    Loading cart...
+  </span>
+</div>
+
+  <!-- Error -->
+<div *ngIf="cartStore.error()" 
+     class="flex items-center p-4 mb-4 text-red-800 border border-red-300 rounded-lg bg-red-50"
+     role="alert">
+     
+  <svg class="flex-shrink-0 w-4 h-4 mr-2" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+    <path d="M10 2a8 8 0 100 16A8 8 0 0010 2zm1 10H9v2h2v-2zm0-6H9v4h2V6z"/>
+  </svg>
+
+  <span class="text-sm font-medium">
+    {{ cartStore.error() }}
+  </span>
+</div>
+
+
+
+
   <div *ngIf="cartStore.cart() as cart" class="bg-white border rounded-xl p-4">
     <div *ngIf="cart.items.length===0" class="text-slate-600">
       Cart is empty. <a routerLink="/restaurants" class="underline">Browse restaurants</a>
