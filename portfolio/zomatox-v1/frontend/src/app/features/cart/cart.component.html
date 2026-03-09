@@ -48,11 +48,22 @@
         <p>Qty : {{it.qty}}</p>
 
 
-         <button class="border rounded px-2 py-1" (click)="cartStore.upsert(it.menuItemId, it.qty-1)" [disabled]="it.qty<=1">-</button>
-        <button class="border rounded px-2 py-1" (click)="cartStore.upsert(it.menuItemId, it.qty+1)">+</button>
+         <button class="border rounded px-2 py-1" 
+         (click)="cartStore.upsert(it.menuItemId, it.qty-1)" 
+         [disabled]="it.qty<=1"
+          [attr.aria-label]="'Decrease quantity of : '+it.name"
+         >-</button>
+
+
+        <button class="border rounded px-2 py-1" 
+        (click)="cartStore.upsert(it.menuItemId, it.qty+1)"
+          [attr.aria-label]="'Remove quantity of : '+it.name"
+
+         >+</button>
+
+
         <button class="border rounded px-2 py-1" (click)="cartStore.remove(it.menuItemId)"
         
-         [attr.aria-label]="'Remove ' + it.name + ' from cart'"
         >Remove</button>
       </div>
     </div>
