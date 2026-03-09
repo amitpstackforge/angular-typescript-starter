@@ -16,4 +16,9 @@ export class CartComponent {
   constructor() {
     this.cartStore.load();
   }
+
+  
+  trackByMenuItemId(index: number, item: any) {
+    return item.menuItemId;
+  }
 }

@@ -37,7 +37,7 @@
       Cart is empty. <a routerLink="/restaurants" class="underline">Browse restaurants</a>
     </div>
 
-    <div *ngFor="let it of cart.items" class="flex items-center justify-between py-2 border-b last:border-b-0">
+    <div *ngFor="let it of cart.items; trackBy: trackByMenuItemId" class="flex items-center justify-between py-2 border-b last:border-b-0">
       <div>
         <div class="font-medium">{{it.name}}</div>
         <div class="text-sm text-slate-600">{{it.price | currency:'INR'}} × {{it.qty}} = {{it.lineTotal | currency:'INR'}}</div>
