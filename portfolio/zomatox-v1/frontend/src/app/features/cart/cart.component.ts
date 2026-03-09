@@ -17,20 +17,32 @@ import { CartStore } from '../../core/cart.store';
     <div *ngFor="let it of cart.items" class="flex items-center justify-between py-2 border-b last:border-b-0">
       <div>
         <div class="font-medium">{{it.name}}</div>
-        <div class="text-sm text-slate-600">₹{{it.price}} × {{it.qty}} = ₹{{it.lineTotal}}</div>
+        <div class="text-sm text-slate-600">{{it.price | currency:'INR'}} × {{it.qty}} = ₹{{it.lineTotal}}</div>
       </div>
 
       <div class="flex gap-2">
-        <button class="border rounded px-2 py-1" (click)="cartStore.upsert(it.menuItemId, it.qty-1)" [disabled]="it.qty<=1">-</button>
+        <p>MenuItemId : {{it.menuItemId}}</p>
+        <p>Qty : {{it.qty}}</p>
+
+
+         <button class="border rounded px-2 py-1" (click)="cartStore.upsert(it.menuItemId, it.qty-1)" [disabled]="it.qty<=1">-</button>
         <button class="border rounded px-2 py-1" (click)="cartStore.upsert(it.menuItemId, it.qty+1)">+</button>
-        <button class="border rounded px-2 py-1" (click)="cartStore.remove(it.menuItemId)">Remove</button>
+        <button class="border rounded px-2 py-1" (click)="cartStore.remove(it.menuItemId)"
+        
+         [attr.aria-label]="'Remove ' + it.name + ' from cart'"
+        >Remove</button>
       </div>
     </div>
 
     <div class="mt-4 flex items-center justify-between">
       <div class="font-semibold">Item Total: ₹{{cart.itemTotal}}</div>
-      <a routerLink="/checkout" class="bg-black text-white rounded px-4 py-2" [class.opacity-50]="cart.items.length===0"
-         [attr.aria-disabled]="cart.items.length===0">Checkout</a>
+      <a class="bg-black text-white rounded px-4 py-2" 
+        
+        [routerLink]="cart.items.length ? '/checkout' : null"
+         [class.opacity-50]="cart.items.length===0"
+          (click)="cart.items.length===0 && $event.preventDefault()"
+
+         >Checkout</a>
     </div>
   </div>
   `,
