@@ -7,8 +7,6 @@ import { CartStore } from '../../core/cart.store';
   standalone: true,
   imports: [CommonModule, RouterLink],
     templateUrl: './cart.component.html'
-
- 
 })
 export class CartComponent {
   cartStore = inject(CartStore);
