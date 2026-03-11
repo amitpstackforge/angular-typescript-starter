@@ -15,6 +15,7 @@ export class RestaurantListComponent {
 
   restaurants = signal<Restaurant[]>([]);
   page = signal(0);
+  loading = signal(false);
   fallback = "https://picsum.photos/seed/fallback/640/360";
 
   city = "Kolkata";
@@ -25,6 +26,8 @@ export class RestaurantListComponent {
   totalPages = 0;
 
   load() {
+    this.loading.set(true); // start loading
+
     this.api
       .restaurants({
         city: this.city,
@@ -36,6 +39,8 @@ export class RestaurantListComponent {
       .subscribe((res) => {
         this.restaurants.set(res.content ?? []);
         this.totalPages = res.totalPages; // if backend provides
+
+        this.loading.set(false); // stop loading
       });
   }
 
