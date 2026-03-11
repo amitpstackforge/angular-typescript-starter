@@ -22,9 +22,11 @@ public class RestaurantController {
     @RequestParam(name = "q", required = false) String q,
     @RequestParam(name = "cuisine", required = false) String cuisine,
     @RequestParam(name = "sort", required = false, defaultValue = "rating") String sort,
-    @RequestParam(name = "page", required = false, defaultValue = "0") int page
+    @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+    @RequestParam(name = "size", required = false, defaultValue = "10") int size   // ✅ new
+
   ) {
-    Page<Restaurant> res = restaurantService.listRestaurants(city, q, cuisine, sort, page);
+    Page<Restaurant> res = restaurantService.listRestaurants(city, q, cuisine, sort, page,size);
     return res.map(RestaurantResponse::from);
   }
 
@@ -38,4 +40,5 @@ public class RestaurantController {
     Restaurant r = restaurantService.getRestaurantOrThrow(id);
     return restaurantService.getMenu(r).stream().map(MenuItemResponse::from).toList();
   }
+
 }

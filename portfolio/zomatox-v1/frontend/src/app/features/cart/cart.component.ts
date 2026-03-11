@@ -9,12 +9,23 @@ import { CartStore } from '../../core/cart.store';
     templateUrl: './cart.component.html'
 })
 export class CartComponent {
-  cartStore = inject(CartStore);
 
-  constructor() {
+
+  increaseQty(item: any) {
+  if (!this.cartStore.loading()) {
+    this.cartStore.upsert(item.menuItemId, item.qty + 1);
+  }
+}
+
+decreaseQty(item: any) {
+  if (!this.cartStore.loading() && item.qty > 1) {
+    this.cartStore.upsert(item.menuItemId, item.qty - 1);
+  }
+}
+  cartStore = inject(CartStore);
+ngOnInit() {
     this.cartStore.load();
   }
-
   
   trackByMenuItemId(index: number, item: any) {
     return item.menuItemId;

@@ -20,11 +20,11 @@ public class RestaurantService {
   private final RestaurantRepository restaurantRepository;
   private final MenuItemRepository menuItemRepository;
 
-  public Page<Restaurant> listRestaurants(String city, String q, String cuisine, String sort, int page) {
+  public Page<Restaurant> listRestaurants(String city, String q, String cuisine, String sort, int page, int size  ) {
     String citySafe = city == null ? "" : city.trim();
     String qSafe = q == null ? "" : q.trim();
 
-    Pageable pageable = PageRequest.of(Math.max(page, 0), 10, sortSpec(sort));
+    Pageable pageable = PageRequest.of(Math.max(page, 0), size, sortSpec(sort));
     Page<Restaurant> base;
 
     if (!qSafe.isBlank()) {

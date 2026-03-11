@@ -1,72 +1,55 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
-import { ApiService } from '../../core/api.service';
-import { Restaurant } from '../../core/models';
+import { CommonModule } from "@angular/common";
+import { Component, inject, signal } from "@angular/core";
+import { FormsModule } from "@angular/forms";
+import { RouterLink } from "@angular/router";
+import { ApiService } from "../../core/api.service";
+import { Restaurant } from "../../core/models";
 
 @Component({
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
-  template: `
-  <div class="flex items-end gap-3 mb-4">
-    <div class="flex-1">
-      <label class="text-xs text-slate-600">Search</label>
-      <input class="w-full border rounded px-3 py-2" [(ngModel)]="q" placeholder="Restaurant name..." />
-    </div>
-
-    <div>
-      <label class="text-xs text-slate-600">City</label>
-      <select class="border rounded px-3 py-2" [(ngModel)]="city">
-        <option value="">All</option>
-        <option value="Kolkata">Kolkata</option>
-        <option value="Bengaluru">Bengaluru</option>
-      </select>
-    </div>
-
-    <div>
-      <label class="text-xs text-slate-600">Sort</label>
-      <select class="border rounded px-3 py-2" [(ngModel)]="sort">
-        <option value="rating">Rating</option>
-        <option value="time">Delivery time</option>
-      </select>
-    </div>
-
-    <button class="bg-black text-white rounded px-4 py-2" (click)="load()">Search</button>
-  </div>
-
-  <div class="grid md:grid-cols-2 gap-4">
-    <a *ngFor="let r of restaurants()"
-       class="bg-white border rounded-xl overflow-hidden hover:shadow"
-       [routerLink]="['/restaurants', r.id]">
-      <img class="w-full h-40 object-cover" [src]="r.imageUrl || fallback" />
-      <div class="p-4">
-        <div class="font-semibold">{{r.name}}</div>
-        <div class="text-sm text-slate-600">{{r.city}} • {{r.cuisineType}}</div>
-        <div class="mt-2 text-sm">
-          ⭐ {{r.ratingAvg.toFixed(1)}} • {{r.deliveryTimeMin}} min
-        </div>
-      </div>
-    </a>
-  </div>
-  `,
+  templateUrl: "./restaurant-list.component.html",
 })
 export class RestaurantListComponent {
   private api = inject(ApiService);
 
   restaurants = signal<Restaurant[]>([]);
-  fallback = 'https://picsum.photos/seed/fallback/640/360';
+  page = signal(0);
+  fallback = "https://picsum.photos/seed/fallback/640/360";
 
-  city = 'Kolkata';
-  q = '';
-  sort = 'rating';
+  city = "Kolkata";
+  q = "";
+  sort = "rating";
+  pageSize = 2;
+
+  totalPages = 0;
 
   load() {
-    this.api.restaurants({ city: this.city, q: this.q, sort: this.sort, page: 0 })
-      .subscribe(res => this.restaurants.set(res.content ?? []));
+    this.api
+      .restaurants({
+        city: this.city,
+        q: this.q,
+        sort: this.sort,
+        page: this.page(),
+        size: this.pageSize, // ✅ new line
+      })
+      .subscribe((res) => {
+        this.restaurants.set(res.content ?? []);
+        this.totalPages = res.totalPages; // if backend provides
+      });
   }
 
   constructor() {
     this.load();
+  }
+  next() {
+    this.page.set(this.page() + 1);
+    this.load();
+  }
+  prev() {
+    if (this.page() > 0) {
+      this.page.set(this.page() - 1);
+      this.load();
+    }
   }
 }

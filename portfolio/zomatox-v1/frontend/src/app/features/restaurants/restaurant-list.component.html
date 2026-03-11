@@ -1,0 +1,70 @@
+<div class="flex items-end gap-3 mb-4">
+  <div class="flex-1">
+    <label class="text-xs text-slate-600">Search</label>
+    <input
+      class="w-full border rounded px-3 py-2"
+      [(ngModel)]="q"
+      placeholder="Restaurant name..."
+    />
+  </div>
+
+  <div>
+    <label class="text-xs text-slate-600">City</label>
+    <select class="border rounded px-3 py-2" [(ngModel)]="city">
+      <option value="">All</option>
+      <option value="Kolkata">Kolkata</option>
+      <option value="Bengaluru">Bengaluru</option>
+    </select>
+  </div>
+
+  <div>
+    <label class="text-xs text-slate-600">Sort</label>
+    <select class="border rounded px-3 py-2" [(ngModel)]="sort">
+      <option value="rating">Rating</option>
+      <option value="time">Delivery time</option>
+    </select>
+  </div>
+
+  <button class="bg-black text-white rounded px-4 py-2" (click)="load()">
+    Search
+  </button>
+</div>
+
+<div class="grid md:grid-cols-2 gap-4">
+  <a
+    *ngFor="let r of restaurants()"
+    class="bg-white border rounded-xl overflow-hidden hover:shadow"
+    [routerLink]="['/restaurants', r.id]"
+  >
+    <img class="w-full h-40 object-cover" [src]="r.imageUrl || fallback" />
+    <div class="p-4">
+      <div class="font-semibold">{{ r.name }}</div>
+      <div class="text-sm text-slate-600">
+        {{ r.city }} • {{ r.cuisineType }}
+      </div>
+      <div class="mt-2 text-sm">
+        ⭐ {{ r.ratingAvg.toFixed(1) }} • {{ r.deliveryTimeMin }} min
+      </div>
+    </div>
+  </a>
+</div>
+
+<div class="flex justify-center items-center gap-4 mt-6">
+  <button
+    (click)="prev()"
+    class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition disabled:opacity-50"
+  >
+    Previous
+  </button>
+
+  <span class="px-4 py-2 bg-white border rounded-lg text-sm font-medium">
+    Page: {{ page() }}
+  </span>
+
+  <button 
+  (click)="next()" 
+  [disabled]="page() >= totalPages - 1"
+  class="px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition">
+  Next
+</button>
+</div>
