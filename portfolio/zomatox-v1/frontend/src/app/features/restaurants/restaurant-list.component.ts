@@ -19,7 +19,9 @@ export class RestaurantListComponent implements OnInit {
   error = signal<string | null>(null);
   fallback = "https://picsum.photos/seed/fallback/640/360";
 
-  city = "Kolkata";
+  city = "";
+  
+  cities = ["Kolkata", "Bengaluru", "Chennai"];
   q = "";
   sort = "rating";
   pageSize = 2;
@@ -48,9 +50,6 @@ export class RestaurantListComponent implements OnInit {
       }),
       this.error.set("Failed to load restaurants. Please try again."));
     this.loading.set(false);
-      
-      
-      ;
   }
 
   next() {

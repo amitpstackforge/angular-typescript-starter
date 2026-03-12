@@ -12,8 +12,10 @@
     <label class="text-xs text-slate-600">City</label>
     <select class="border rounded px-3 py-2" [(ngModel)]="city">
       <option value="">All</option>
-      <option value="Kolkata">Kolkata</option>
-      <option value="Bengaluru">Bengaluru</option>
+
+      <option *ngFor="let city of cities" [value]="city">
+        {{ city }}
+      </option>
     </select>
   </div>
 
@@ -46,24 +48,21 @@
   </div>
 </div>
 
-<div *ngIf="error()" 
-     class="text-center py-10 text-red-500">
-
+<div *ngIf="error()" class="text-center py-10 text-red-500">
   <p class="text-lg font-semibold">
     {{ error() }}
   </p>
 
-  <button
-    class="mt-3 px-4 py-2 bg-black text-white rounded"
-    (click)="load()"
-  >
+  <button class="mt-3 px-4 py-2 bg-black text-white rounded" (click)="load()">
     Retry
   </button>
-
 </div>
 
 <!-- Empty State -->
-<div *ngIf="!loading() && !error() && restaurants().length > 0" class="grid md:grid-cols-2 gap-4">
+<div
+  *ngIf="!loading() && !error() && restaurants().length > 0"
+  class="grid md:grid-cols-2 gap-4"
+>
   <p class="text-lg font-medium">No restaurants found</p>
   <p class="text-sm">Try changing city or search keyword</p>
 </div>
