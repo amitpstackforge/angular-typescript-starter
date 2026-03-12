@@ -46,6 +46,12 @@
   </div>
 </div>
 
+<!-- Empty State -->
+<div *ngIf="!loading() && restaurants().length > 0" class="grid md:grid-cols-2 gap-4">
+  <p class="text-lg font-medium">No restaurants found</p>
+  <p class="text-sm">Try changing city or search keyword</p>
+</div>
+
 <div class="grid md:grid-cols-2 gap-4">
   <a
     *ngFor="let r of restaurants()"
