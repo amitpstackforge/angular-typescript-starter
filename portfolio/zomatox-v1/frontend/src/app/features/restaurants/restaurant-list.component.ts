@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject, signal, OnInit } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { ApiService } from "../../core/api.service";
@@ -10,7 +10,7 @@ import { Restaurant } from "../../core/models";
   imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: "./restaurant-list.component.html",
 })
-export class RestaurantListComponent {
+export class RestaurantListComponent implements OnInit {
   private api = inject(ApiService);
 
   restaurants = signal<Restaurant[]>([]);
@@ -24,7 +24,9 @@ export class RestaurantListComponent {
   pageSize = 2;
 
   totalPages = 0;
-
+  ngOnInit() {
+    this.load(); // ✅ lifecycle safe
+  }
   load() {
     this.loading.set(true); // start loading
 
@@ -44,9 +46,7 @@ export class RestaurantListComponent {
       });
   }
 
-  constructor() {
-    this.load();
-  }
+  
   next() {
     this.page.set(this.page() + 1);
     this.load();
@@ -58,3 +58,4 @@ export class RestaurantListComponent {
     }
   }
 }
+
