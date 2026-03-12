@@ -16,6 +16,7 @@ export class RestaurantListComponent implements OnInit {
   restaurants = signal<Restaurant[]>([]);
   page = signal(0);
   loading = signal(false);
+  error = signal<string | null>(null);
   fallback = "https://picsum.photos/seed/fallback/640/360";
 
   city = "Kolkata";
@@ -24,13 +25,15 @@ export class RestaurantListComponent implements OnInit {
   pageSize = 2;
 
   totalPages = 0;
+
   ngOnInit() {
     this.load(); // ✅ lifecycle safe
   }
   load() {
     this.loading.set(true); // start loading
+    this.error.set(null);
 
-    this.api
+    (this.api
       .restaurants({
         city: this.city,
         q: this.q,
@@ -41,12 +44,15 @@ export class RestaurantListComponent implements OnInit {
       .subscribe((res) => {
         this.restaurants.set(res.content ?? []);
         this.totalPages = res.totalPages; // if backend provides
-
         this.loading.set(false); // stop loading
-      });
+      }),
+      this.error.set("Failed to load restaurants. Please try again."));
+    this.loading.set(false);
+      
+      
+      ;
   }
 
-  
   next() {
     this.page.set(this.page() + 1);
     this.load();
@@ -58,4 +64,3 @@ export class RestaurantListComponent implements OnInit {
     }
   }
 }
-
