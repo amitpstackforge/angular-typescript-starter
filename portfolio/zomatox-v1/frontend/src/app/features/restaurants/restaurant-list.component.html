@@ -73,7 +73,7 @@
 
 <div class="grid md:grid-cols-2 gap-4">
   <a
-    *ngFor="let r of restaurants()"
+    *ngFor="let r of restaurants(); trackBy: trackByRestaurantId"
     class="bg-white border rounded-xl overflow-hidden hover:shadow"
     [routerLink]="['/restaurants', r.id]"
   >

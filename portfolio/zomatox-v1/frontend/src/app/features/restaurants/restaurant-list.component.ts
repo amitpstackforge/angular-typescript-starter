@@ -66,4 +66,8 @@ export class RestaurantListComponent implements OnInit {
       this.load();
     }
   }
+
+  trackByRestaurantId(index: number, item: Restaurant) {
+    return item.id;
+  }
 }
