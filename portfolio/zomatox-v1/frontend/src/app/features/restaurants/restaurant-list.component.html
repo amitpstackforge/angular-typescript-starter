@@ -64,11 +64,18 @@
 
 <!-- Empty State -->
 <div
-  *ngIf="!loading() && !error() && restaurants().length > 0"
-  class="grid md:grid-cols-2 gap-4"
+  *ngIf="!loading() && !error() && restaurants().length == 0"
+  class="flex items-center justify-center py-16"
 >
-  <p class="text-lg font-medium">No restaurants found</p>
-  <p class="text-sm">Try changing city or search keyword</p>
+  <div
+    class="bg-white shadow-md rounded-2xl p-8 text-center max-w-md w-full border"
+  >
+    <div class="text-5xl mb-4">🍽️</div>
+
+    <p class="text-xl font-semibold text-gray-800 mb-2">No restaurants found</p>
+
+    <p class="text-gray-500 text-sm">Try changing the city or search keyword</p>
+  </div>
 </div>
 
 <div class="grid md:grid-cols-2 gap-4">
