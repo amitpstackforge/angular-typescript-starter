@@ -5,6 +5,8 @@ import { RouterLink } from "@angular/router";
 import { ApiService } from "../../core/api.service";
 import { Restaurant } from "../../core/models";
 
+type SortType = "rating" | "time";
+
 @Component({
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule],
@@ -23,7 +25,8 @@ export class RestaurantListComponent implements OnInit {
 
   cities = ["Kolkata", "Bengaluru", "Chennai"];
   q = "";
-  sort = "rating";
+  sort: SortType = "rating"; //  strong typing
+
   pageSize = 2;
 
   totalPages = 0;
