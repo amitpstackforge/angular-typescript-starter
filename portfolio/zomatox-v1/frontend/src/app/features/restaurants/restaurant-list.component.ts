@@ -20,7 +20,7 @@ export class RestaurantListComponent implements OnInit {
   fallback = "https://picsum.photos/seed/fallback/640/360";
 
   city = "";
-  
+
   cities = ["Kolkata", "Bengaluru", "Chennai"];
   q = "";
   sort = "rating";
@@ -32,24 +32,28 @@ export class RestaurantListComponent implements OnInit {
     this.load(); // ✅ lifecycle safe
   }
   load() {
-    this.loading.set(true); // start loading
+    this.loading.set(true);
     this.error.set(null);
 
-    (this.api
+    this.api
       .restaurants({
-        city: this.city,
+        city: this.city || undefined,
         q: this.q,
         sort: this.sort,
         page: this.page(),
-        size: this.pageSize, // ✅ new line
+        size: this.pageSize,
       })
-      .subscribe((res) => {
-        this.restaurants.set(res.content ?? []);
-        this.totalPages = res.totalPages; // if backend provides
-        this.loading.set(false); // stop loading
-      }),
-      this.error.set("Failed to load restaurants. Please try again."));
-    this.loading.set(false);
+      .subscribe({
+        next: (res) => {
+          this.restaurants.set(res.content ?? []);
+          this.totalPages = res.totalPages;
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set("Failed to load restaurants. Please try again.");
+          this.loading.set(false);
+        },
+      });
   }
 
   next() {

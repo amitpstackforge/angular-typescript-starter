@@ -10,7 +10,11 @@
 
   <div>
     <label class="text-xs text-slate-600">City</label>
-    <select class="border rounded px-3 py-2" [(ngModel)]="city">
+    <select
+      class="border rounded px-3 py-2"
+      [(ngModel)]="city"
+      (change)="load()"
+    >
       <option value="">All</option>
 
       <option *ngFor="let city of cities" [value]="city">
