@@ -4,7 +4,7 @@ import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import { ApiService } from "../../core/api.service";
 import { Restaurant } from "../../core/models";
-
+import { Subject, debounceTime } from "rxjs";
 type SortType = "rating" | "time";
 
 @Component({
@@ -14,7 +14,7 @@ type SortType = "rating" | "time";
 })
 export class RestaurantListComponent implements OnInit {
   private api = inject(ApiService);
-
+  private searchSubject = new Subject<void>();
   restaurants = signal<Restaurant[]>([]);
   page = signal(0);
   loading = signal(false);
@@ -32,8 +32,18 @@ export class RestaurantListComponent implements OnInit {
   totalPages = 0;
 
   ngOnInit() {
-    this.load(); // ✅ lifecycle safe
+    this.searchSubject.pipe(debounceTime(300)).subscribe(() => {
+      this.page.set(0);
+      this.load();
+    });
+
+    this.load();
   }
+
+  onSearchChange() {
+    this.searchSubject.next();
+  }
+
   load() {
     this.loading.set(true);
     this.error.set(null);

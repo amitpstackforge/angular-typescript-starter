@@ -4,6 +4,7 @@
     <input
       class="w-full border rounded px-3 py-2"
       [(ngModel)]="q"
+      (ngModelChange)="onSearchChange()"
       placeholder="Restaurant name..."
     />
   </div>
