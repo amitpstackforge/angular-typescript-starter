@@ -62,7 +62,8 @@ export class RestaurantListComponent implements OnInit {
           this.totalPages = res.totalPages;
           this.loading.set(false);
         },
-        error: () => {
+        error: (err) => {
+          console.error("Restaurant API failed", err);
           this.error.set("Failed to load restaurants. Please try again.");
           this.loading.set(false);
         },
