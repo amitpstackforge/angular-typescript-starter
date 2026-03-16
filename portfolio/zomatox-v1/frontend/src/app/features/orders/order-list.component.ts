@@ -14,7 +14,8 @@ export class OrderListComponent {
 
   orders = signal<Order[]>([]);
   error = signal<string | null>(null);
-  loading: any;
+  loading = signal(true); //  FIX
+
   constructor() {
     this.api.orders().subscribe({
       next: (os) => {
