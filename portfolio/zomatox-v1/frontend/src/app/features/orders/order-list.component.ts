@@ -1,34 +1,31 @@
-import { CommonModule } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ApiService } from '../../core/api.service';
-import { Order } from '../../core/models';
+import { CommonModule } from "@angular/common";
+import { Component, inject, signal } from "@angular/core";
+import { RouterLink } from "@angular/router";
+import { ApiService } from "../../core/api.service";
+import { Order } from "../../core/models";
 
 @Component({
   standalone: true,
   imports: [CommonModule, RouterLink],
-  template: `
-  <h1 class="text-xl font-bold mb-3">Orders</h1>
-
-  <div class="grid gap-3">
-    <a *ngFor="let o of orders()"
-       class="bg-white border rounded-xl p-4 hover:shadow"
-       [routerLink]="['/orders', o.id]">
-      <div class="flex items-center justify-between">
-        <div class="font-semibold">Order #{{o.id}}</div>
-        <div class="text-sm px-2 py-1 rounded bg-slate-100">{{o.status}}</div>
-      </div>
-      <div class="text-sm text-slate-600 mt-1">Total: ₹{{o.payableTotal}}</div>
-      <div class="text-xs text-slate-500 mt-1">{{o.createdAt}}</div>
-    </a>
-  </div>
-  `,
+  templateUrl: "./order-list.component.html",
 })
 export class OrderListComponent {
   private api = inject(ApiService);
-  orders = signal<Order[]>([]);
 
+  orders = signal<Order[]>([]);
+  error = signal<string | null>(null);
+  loading: any;
   constructor() {
-    this.api.orders().subscribe(os => this.orders.set(os));
+    this.api.orders().subscribe({
+      next: (os) => {
+        this.orders.set(os);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.error.set("Failed to load orders");
+        this.loading.set(false);
+      },
+    });
   }
 }
+
