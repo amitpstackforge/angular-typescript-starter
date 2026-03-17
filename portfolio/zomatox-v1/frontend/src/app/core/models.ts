@@ -34,7 +34,12 @@ export type Cart = {
   itemTotal: number;
 };
 
-export type OrderItem = { name: string; price: number; qty: number; lineTotal: number; };
+export type OrderItem = {
+  name: string;
+  price: number;
+  qty: number;
+  lineTotal: number;
+};
 export type Order = {
   id: number;
   userId: number;
@@ -55,3 +60,16 @@ export type Address = {
   pincode: string;
   phone: string;
 };
+
+export interface OwnerOrder {
+  id: number;
+  status: string;
+  payableTotal: number;
+}
+
+export interface OwnerRestaurant {
+  id: number;
+  name: string;
+  city: string;
+  cuisineType: string;
+}

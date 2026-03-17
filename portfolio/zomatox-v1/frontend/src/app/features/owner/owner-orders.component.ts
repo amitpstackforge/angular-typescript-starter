@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
 import { ApiService } from "../../core/api.service";
+import { OwnerOrder } from "../../core/models";
 
 @Component({
   standalone: true,
@@ -10,7 +11,7 @@ import { ApiService } from "../../core/api.service";
 export class OwnerOrdersComponent {
   private api = inject(ApiService);
 
-  orders = signal<any[]>([]);
+  orders = signal<OwnerOrder[]>([]);
   loading = signal(false);
   error = signal<string | null>(null);
 

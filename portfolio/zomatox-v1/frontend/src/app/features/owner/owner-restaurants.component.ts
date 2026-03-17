@@ -1,6 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
 import { ApiService } from "../../core/api.service";
+import { OwnerRestaurant } from "../../core/models";
 
 @Component({
   standalone: true,
@@ -10,7 +11,7 @@ import { ApiService } from "../../core/api.service";
 export class OwnerRestaurantsComponent {
   private api = inject(ApiService);
 
-  restaurants = signal<any[]>([]);
+  restaurants = signal<OwnerRestaurant[]>([]);
   loading = signal(true);
   error = signal<string | null>(null);
 
