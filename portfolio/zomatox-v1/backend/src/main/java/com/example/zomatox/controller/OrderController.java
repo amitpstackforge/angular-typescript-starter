@@ -10,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,7 +30,8 @@ public class OrderController {
   @GetMapping
   public List<OrderResponse> list(@RequestHeader(value = "X-User-Id", required = false) String userId) {
     User u = RequestContext.requireUser(userService, userId);
-    return orderService.listOrders(u);
+//    return orderService.listOrders(u);
+    return new ArrayList<>();
   }
 
   @GetMapping("/{id}")

@@ -1,0 +1,28 @@
+<h1 class="text-xl font-bold mb-3">Owner • My Restaurants</h1>
+
+<!-- Loading -->
+<div *ngIf="loading()" class="text-sm">Loading restaurants...</div>
+
+<!-- Error -->
+<div *ngIf="error()" class="text-red-500 mb-3">
+  {{ error() }}
+</div>
+
+<!-- Empty State -->
+<div
+  *ngIf="!loading() && !error() && restaurants().length === 0"
+  class="text-slate-500 text-sm"
+>
+  No restaurants found.
+</div>
+
+<!-- Restaurants List -->
+<div class="grid gap-3">
+  <div *ngFor="let r of restaurants()" class="bg-white border rounded-xl p-4">
+    <div class="font-semibold">
+      {{ r.name }}
+    </div>
+
+    <div class="text-sm text-slate-600">{{ r.city }} • {{ r.cuisineType }}</div>
+  </div>
+</div>
