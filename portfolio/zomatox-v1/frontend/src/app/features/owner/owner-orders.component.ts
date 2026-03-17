@@ -1,7 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
 import { ApiService } from "../../core/api.service";
-import { OwnerOrder } from "../../core/models";
 
 @Component({
   standalone: true,
@@ -11,41 +10,41 @@ import { OwnerOrder } from "../../core/models";
 export class OwnerOrdersComponent {
   private api = inject(ApiService);
 
-  orders = signal<OwnerOrder[]>([]);
-  loading = signal(false);
-  error = signal<string | null>(null);
+  orders = signal<any[]>([]);
+  isLoading = signal(false);
+  errorMessage = signal<string | null>(null);
 
   constructor() {
     this.load("CONFIRMED");
   }
 
   load(status: string) {
-    this.loading.set(true);
-    this.error.set(null);
+    this.isLoading.set(true);
+    this.errorMessage.set(null);
 
     this.api.ownerOrders(status).subscribe({
       next: (os) => {
         this.orders.set(os);
-        this.loading.set(false);
+        this.isLoading.set(false);
       },
       error: () => {
-        this.error.set("Failed to load orders");
-        this.loading.set(false);
+        this.errorMessage.set("Failed to load orders");
+        this.isLoading.set(false);
       },
     });
   }
 
   set(orderId: number, next: string) {
-    this.loading.set(true);
+    this.isLoading.set(true);
 
     this.api.ownerSetOrderStatus(orderId, next).subscribe({
       next: () => {
-        this.error.set(null);
+        this.errorMessage.set(null);
         this.load(next);
       },
       error: () => {
-        this.error.set("Failed to update order status");
-        this.loading.set(false);
+        this.errorMessage.set("Failed to update order status");
+        this.isLoading.set(false);
       },
     });
   }

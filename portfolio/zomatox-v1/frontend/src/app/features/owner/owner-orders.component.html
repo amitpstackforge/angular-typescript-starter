@@ -1,13 +1,13 @@
 <h1 class="text-xl font-bold mb-3">Owner • Orders Queue</h1>
 
 <!-- Loading -->
-<div *ngIf="loading()" class="text-sm">
+<div *ngIf="isLoading()" class="text-sm">
   Loading...
 </div>
 
 <!-- Error -->
-<div *ngIf="error()" class="text-red-500 mb-3">
-  {{ error() }}
+<div *ngIf="errorMessage()" class="text-red-500 mb-3">
+  {{ errorMessage() }}
 </div>
 
 <!-- Status Filter Buttons -->
@@ -26,7 +26,7 @@
 </div>
 
 <!-- Empty State -->
-<div *ngIf="!loading() && !error() && orders().length === 0"
+<div *ngIf="!isLoading() && !errorMessage() && orders().length === 0"
      class="text-slate-500 text-sm">
   No orders in this queue.
 </div>
