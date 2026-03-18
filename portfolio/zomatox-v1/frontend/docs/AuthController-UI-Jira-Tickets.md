@@ -272,6 +272,233 @@ Source API contract: `docs/AuthController.md`
   - Tester can run auth scenarios without reading backend code.
   - All endpoint error messages are mapped in test docs.
 
+### AUTH-UI-13 - Add Requestly setup guide (cURL import + mock responses)
+- Type: Task
+- Summary: Add ticket-wise Requestly import and response validation guide for all auth endpoint cases.
+- Changes required:
+  - Update this file with per-ticket Requestly cURLs and expected responses.
+  - Update `MANUAL_TESTING.md` with link/reference to this Requestly section.
+- Acceptance criteria:
+  - Every endpoint ticket (`AUTH-UI-05` to `AUTH-UI-09`) has import steps and expected response cases.
+  - New joiner can validate all auth flows from Requestly without backend code reading.
+
+## Requestly Cases by Ticket ID (All Cases)
+
+Use this section while implementing each endpoint ticket (`AUTH-UI-05` to `AUTH-UI-09`).
+
+### Common steps (apply to every ticket)
+1. Open Requestly and go to `API Client`.
+2. Create collection `ZomatoX AuthController`.
+3. Click `Import cURL`, paste one cURL command, and save the request with a clear name (`Signup - Success`, `Login - Invalid Credentials`).
+4. Run request and verify HTTP status + response body.
+5. To test UI without backend data conditions, create `HTTP Rules` -> `API Mock` (or `Modify API Response`) for same method + URL.
+6. For token-based calls, replace placeholders before running:
+   - `PASTE_ACCESS_TOKEN_HERE`
+   - `PASTE_REFRESH_TOKEN_HERE`
+
+### AUTH-UI-05 Requestly cases (`POST /api/auth/signup`)
+1. Import cURL: Signup success
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/signup" -H "Content-Type: application/json" -d "{\"name\":\"Requestly User\",\"email\":\"requestly.user.unique@example.com\",\"password\":\"Pass@123\"}"
+```
+Expected response (`200`):
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9....",
+  "refreshToken": "4c2d...-uuid.8f5a...-uuid",
+  "user": {
+    "id": 11,
+    "name": "Requestly User",
+    "email": "requestly.user.unique@example.com",
+    "role": "CUSTOMER"
+  }
+}
+```
+2. Import cURL: Duplicate email
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/signup" -H "Content-Type: application/json" -d "{\"name\":\"Customer One\",\"email\":\"customer@zomatox.local\",\"password\":\"customer123\"}"
+```
+Expected response (`400`):
+```json
+{
+  "message": "Email already exists",
+  "validationErrors": {}
+}
+```
+3. Import cURL: Validation error
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/signup" -H "Content-Type: application/json" -d "{\"name\":\"\",\"email\":\"not-an-email\",\"password\":\"\"}"
+```
+Expected response (`400`):
+```json
+{
+  "message": "Validation failed",
+  "validationErrors": {
+    "name": "must not be blank",
+    "email": "must be a well-formed email address",
+    "password": "must not be blank"
+  }
+}
+```
+
+### AUTH-UI-06 Requestly cases (`POST /api/auth/login`)
+1. Import cURL: Login success
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/login" -H "Content-Type: application/json" -d "{\"email\":\"customer@zomatox.local\",\"password\":\"customer123\"}"
+```
+Expected response (`200`):
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9....",
+  "refreshToken": "d8a1...-uuid.e5c3...-uuid",
+  "user": {
+    "id": 1,
+    "name": "Customer One",
+    "email": "customer@zomatox.local",
+    "role": "CUSTOMER"
+  }
+}
+```
+2. Import cURL: Wrong password
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/login" -H "Content-Type: application/json" -d "{\"email\":\"customer@zomatox.local\",\"password\":\"wrong-pass\"}"
+```
+Expected response (`401`):
+```json
+{
+  "message": "Invalid credentials",
+  "validationErrors": {}
+}
+```
+3. Import cURL: Validation error
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/login" -H "Content-Type: application/json" -d "{\"email\":\"bad-email\",\"password\":\"\"}"
+```
+Expected response (`400`):
+```json
+{
+  "message": "Validation failed",
+  "validationErrors": {
+    "email": "must be a well-formed email address",
+    "password": "must not be blank"
+  }
+}
+```
+4. Mock-only case: Inactive user
+Expected response (`403`):
+```json
+{
+  "message": "User is inactive",
+  "validationErrors": {}
+}
+```
+
+### AUTH-UI-07 Requestly cases (`POST /api/auth/refresh`)
+1. Import cURL: Refresh success
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/refresh" -H "Content-Type: application/json" -d "{\"refreshToken\":\"PASTE_REFRESH_TOKEN_HERE\"}"
+```
+Expected response (`200`):
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9....",
+  "refreshToken": "new-uuid-part1.new-uuid-part2",
+  "user": {
+    "id": 1,
+    "name": "Customer One",
+    "email": "customer@zomatox.local",
+    "role": "CUSTOMER"
+  }
+}
+```
+2. Import cURL: Invalid refresh token
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/refresh" -H "Content-Type: application/json" -d "{\"refreshToken\":\"invalid.refresh.token\"}"
+```
+Expected response (`401`):
+```json
+{
+  "message": "Invalid refresh token",
+  "validationErrors": {}
+}
+```
+3. Import cURL: Validation error
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/refresh" -H "Content-Type: application/json" -d "{\"refreshToken\":\"\"}"
+```
+Expected response (`400`):
+```json
+{
+  "message": "Validation failed",
+  "validationErrors": {
+    "refreshToken": "must not be blank"
+  }
+}
+```
+4. Mock-only case: Expired/revoked refresh token
+Expected response (`401`):
+```json
+{
+  "message": "Refresh token expired/revoked",
+  "validationErrors": {}
+}
+```
+
+### AUTH-UI-08 Requestly cases (`POST /api/auth/logout`)
+1. Import cURL: Logout success
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/logout" -H "Content-Type: application/json" -d "{\"refreshToken\":\"PASTE_REFRESH_TOKEN_HERE\"}"
+```
+Expected response (`200`): empty body.
+2. Unknown refresh token case: still `200` empty body (idempotent behavior).
+3. Import cURL: Validation error
+```bash
+curl -i -X POST "http://localhost:8080/api/auth/logout" -H "Content-Type: application/json" -d "{\"refreshToken\":\"\"}"
+```
+Expected response (`400`):
+```json
+{
+  "message": "Validation failed",
+  "validationErrors": {
+    "refreshToken": "must not be blank"
+  }
+}
+```
+
+### AUTH-UI-09 Requestly cases (`GET /api/auth/me`)
+1. Import cURL: Me success
+```bash
+curl -i "http://localhost:8080/api/auth/me" -H "Authorization: Bearer PASTE_ACCESS_TOKEN_HERE"
+```
+Expected response (`200`):
+```json
+{
+  "id": 1,
+  "name": "Customer One",
+  "email": "customer@zomatox.local",
+  "role": "CUSTOMER"
+}
+```
+2. Import cURL: Missing/invalid token
+```bash
+curl -i "http://localhost:8080/api/auth/me"
+```
+Expected response (`401`):
+```json
+{
+  "message": "Unauthorized",
+  "validationErrors": {}
+}
+```
+3. Mock-only case: Token user deleted
+Expected response (`401`):
+```json
+{
+  "message": "User not found",
+  "validationErrors": {}
+}
+```
+
 ---
 
 ## Suggested Jira Epic/Labels
