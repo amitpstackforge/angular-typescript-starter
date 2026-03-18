@@ -1,7 +1,7 @@
 <h1 class="text-xl font-bold mb-3">Orders</h1>
 <div *ngIf="loading()">Loading orders...</div>
 <div class="grid gap-3">
-  <a *ngFor="let o of orders()"
+  <a *ngFor="let o of sortedOrders()"
      class="bg-white border rounded-xl p-4 hover:shadow"
      [routerLink]="['/orders', o.id]">
 

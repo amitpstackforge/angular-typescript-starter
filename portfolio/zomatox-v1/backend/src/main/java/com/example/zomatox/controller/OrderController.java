@@ -30,8 +30,7 @@ public class OrderController {
   @GetMapping
   public List<OrderResponse> list(@RequestHeader(value = "X-User-Id", required = false) String userId) {
     User u = RequestContext.requireUser(userService, userId);
-//    return orderService.listOrders(u);
-    return new ArrayList<>();
+    return orderService.listOrders(u);
   }
 
   @GetMapping("/{id}")

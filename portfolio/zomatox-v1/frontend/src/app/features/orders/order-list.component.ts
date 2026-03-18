@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject, signal } from "@angular/core";
+import { Component, computed, inject, signal } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { ApiService } from "../../core/api.service";
 import { Order } from "../../core/models";
@@ -15,6 +15,9 @@ export class OrderListComponent {
   orders = signal<Order[]>([]);
   error = signal<string | null>(null);
   loading = signal(true); //  FIX
+  sortedOrders = computed(() =>
+    [...this.orders()].sort((a, b) => this.toEpoch(b.createdAt) - this.toEpoch(a.createdAt)),
+  );
 
   constructor() {
     this.api.orders().subscribe({
@@ -28,5 +31,9 @@ export class OrderListComponent {
       },
     });
   }
-}
 
+  private toEpoch(value: string): number {
+    const parsed = Date.parse(value);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+}

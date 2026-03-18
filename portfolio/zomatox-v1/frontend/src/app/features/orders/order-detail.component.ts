@@ -60,7 +60,7 @@ export class OrderDetailComponent {
 
   reload() {
     this.api.order(this.id).subscribe(o => this.order.set(o));
-    this.api.orderEvents(this.id).subscribe(evs => this.events.set(evs));
+    this.api.orderEvents(this.id).subscribe(evs => this.events.set(this.sortEventsByTime(evs)));
   }
 
   confirm(result: 'SUCCESS' | 'FAIL') {
@@ -72,5 +72,14 @@ export class OrderDetailComponent {
       },
       error: e => this.msg.set(e?.error?.message ?? 'Failed'),
     });
+  }
+
+  private sortEventsByTime(events: any[]): any[] {
+    return [...events].sort((a, b) => this.toEpoch(a.createdAt) - this.toEpoch(b.createdAt));
+  }
+
+  private toEpoch(value: string): number {
+    const parsed = Date.parse(value);
+    return Number.isNaN(parsed) ? 0 : parsed;
   }
 }

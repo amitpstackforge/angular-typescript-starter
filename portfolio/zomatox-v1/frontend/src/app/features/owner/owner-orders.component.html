@@ -1,67 +1,144 @@
-<h1 class="text-xl font-bold mb-3">Owner • Orders Queue</h1>
+<section class="space-y-4">
+  <div class="bg-white border rounded-2xl p-5 shadow-sm">
+    <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+      <div>
+        <p class="text-xs uppercase tracking-wide text-slate-500 font-semibold">
+          Owner Console
+        </p>
+        <h1 class="text-2xl font-bold text-slate-900">Orders Queue</h1>
+        <p class="text-sm text-slate-600 mt-1">
+          Move orders through each stage with clear queue views.
+        </p>
+      </div>
 
-<!-- Loading -->
-<div *ngIf="isLoading()" class="text-sm">
-  Loading...
-</div>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="rounded-xl border bg-slate-50 px-3 py-2 text-center w-24">
+          <p class="text-xs text-slate-500">Queue</p>
+          <p class="text-sm font-semibold text-slate-900">{{ queueLabel() }}</p>
+        </div>
 
-<!-- Error -->
-<div *ngIf="errorMessage()" class="text-red-500 mb-3">
-  {{ errorMessage() }}
-</div>
+        <div class="rounded-xl border bg-slate-50 px-3 py-2 text-center w-24">
+          <p class="text-xs text-slate-500">In List</p>
+          <p class="text-sm font-semibold text-slate-900">{{ orders().length }}</p>
+        </div>
 
-<!-- Status Filter Buttons -->
-<div class="flex gap-2 mb-3">
-  <button class="border rounded px-3 py-1" (click)="load('CONFIRMED')">
-    CONFIRMED
-  </button>
-
-  <button class="border rounded px-3 py-1" (click)="load('PREPARING')">
-    PREPARING
-  </button>
-
-  <button class="border rounded px-3 py-1" (click)="load('READY_FOR_PICKUP')">
-    READY_FOR_PICKUP
-  </button>
-</div>
-
-<!-- Empty State -->
-<div *ngIf="!isLoading() && !errorMessage() && orders().length === 0"
-     class="text-slate-500 text-sm">
-  No orders in this queue.
-</div>
-
-<!-- Orders List -->
-<div class="grid gap-3">
-  <div *ngFor="let o of orders()" class="bg-white border rounded-xl p-4">
-
-    <div class="flex justify-between">
-      <div class="font-semibold">Order #{{ o.id }}</div>
-
-      <div class="text-sm bg-slate-100 rounded px-2 py-1">
-        {{ o.status }}
+        <div class="rounded-xl border bg-slate-50 px-3 py-2 text-center w-24">
+          <p class="text-xs text-slate-500">Updating</p>
+          <p class="text-sm font-semibold text-slate-900">
+            {{ pendingUpdatesCount() }}
+          </p>
+        </div>
       </div>
     </div>
 
-    <div class="text-sm text-slate-600 mt-1">
-      Payable ₹{{ o.payableTotal }}
-    </div>
-
-    <div class="mt-3 flex gap-2">
-
+    <div class="grid gap-2 md:grid-cols-3 mt-4">
       <button
-        class="bg-black text-white rounded px-3 py-2"
-        (click)="set(o.id, 'PREPARING')">
-        Set PREPARING
+        *ngFor="let option of queueOptions"
+        type="button"
+        class="rounded-xl border px-3 py-3 text-left transition"
+        [ngClass]="
+          selectedStatus() === option.value
+            ? 'bg-black border-black text-white'
+            : 'hover:bg-slate-50'
+        "
+        (click)="load(option.value)"
+      >
+        <p class="text-sm font-semibold">{{ option.label }}</p>
+        <p
+          class="text-xs mt-1"
+          [class.text-slate-200]="selectedStatus() === option.value"
+          [class.text-slate-500]="selectedStatus() !== option.value"
+        >
+          {{ option.description }}
+        </p>
       </button>
-
-      <button
-        class="border rounded px-3 py-2"
-        (click)="set(o.id, 'READY_FOR_PICKUP')">
-        Set READY_FOR_PICKUP
-      </button>
-
     </div>
-
   </div>
-</div>
+
+  <div *ngIf="isLoading()" class="grid gap-3 md:grid-cols-2">
+    <div
+      *ngFor="let placeholder of [1, 2, 3, 4]"
+      class="bg-white border rounded-xl p-4 animate-pulse"
+    >
+      <div class="h-5 w-36 rounded bg-slate-200"></div>
+      <div class="h-4 w-24 rounded bg-slate-200 mt-3"></div>
+      <div class="h-9 w-full rounded bg-slate-200 mt-4"></div>
+    </div>
+  </div>
+
+  <div
+    *ngIf="errorMessage() && !isLoading()"
+    class="border border-red-200 bg-red-50 rounded-xl p-4 text-red-700"
+  >
+    <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div>
+        <p class="font-semibold">Could not load orders</p>
+        <p class="text-sm">{{ errorMessage() }}</p>
+      </div>
+
+      <button
+        type="button"
+        class="rounded-lg border border-red-300 bg-white px-3 py-2 text-sm font-medium hover:bg-red-100"
+        (click)="load()"
+      >
+        Retry
+      </button>
+    </div>
+  </div>
+
+  <div
+    *ngIf="!isLoading() && !errorMessage() && orders().length === 0"
+    class="bg-white border rounded-xl p-8 text-center"
+  >
+    <p class="text-lg font-semibold text-slate-900">No orders in this queue</p>
+    <p class="text-sm text-slate-600 mt-1">
+      New orders in {{ queueLabel() }} will show up here automatically.
+    </p>
+  </div>
+
+  <div
+    *ngIf="!isLoading() && !errorMessage() && orders().length > 0"
+    class="grid gap-3 md:grid-cols-2"
+  >
+    <article
+      *ngFor="let order of orders(); trackBy: trackByOrderId"
+      class="bg-white border rounded-xl p-4 hover:shadow-sm transition"
+    >
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <h2 class="font-semibold text-slate-900">Order #{{ order.id }}</h2>
+          <p class="text-xs text-slate-500 mt-2">Payable Total</p>
+          <p class="text-lg font-semibold text-slate-900">
+            {{ order.payableTotal | currency : "INR" : "symbol" : "1.0-0" }}
+          </p>
+        </div>
+
+        <span
+          class="text-xs font-semibold px-2 py-1 rounded-full border"
+          [ngClass]="statusBadgeClasses(order.status)"
+        >
+          {{ formatStatus(order.status) }}
+        </span>
+      </div>
+
+      <div class="mt-4 pt-3 border-t">
+        <ng-container *ngIf="nextActionFor(order.status) as action; else noAction">
+          <button
+            type="button"
+            class="w-full rounded-lg px-3 py-2 text-sm font-medium bg-black text-white hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed"
+            (click)="set(order.id, action.next)"
+            [disabled]="isLoading() || isOrderUpdating(order.id)"
+          >
+            {{ isOrderUpdating(order.id) ? "Updating..." : action.label }}
+          </button>
+        </ng-container>
+
+        <ng-template #noAction>
+          <p class="text-sm text-slate-500">
+            No further owner action required for this order.
+          </p>
+        </ng-template>
+      </div>
+    </article>
+  </div>
+</section>
