@@ -1,183 +1,841 @@
-[TITLE]
-ZomatoX v2 Upgrade (from v1) — PostgreSQL+Flyway + Owner Portal + Delivery Partner + Ratings/Reviews
+ 
 
-[ROLE]
-You are a senior full-stack architect and lead engineer. You are upgrading an existing v1 codebase of “ZomatoX” (restaurant discovery + menu + cart + order + mock payment) to v2.
-You MUST keep v1 endpoints working (backward compatible) while adding v2 features.
-Output must be copy-paste ready and compile/run.
+---
 
-[INPUT CONTEXT]
-Assume v1 already exists with:
-- Spring Boot 3 + Java 17 + H2
-- Entities: User, Restaurant, MenuItem, Cart/CartItem, Address, Order/OrderItem, Payment
-- APIs: /restaurants, /cart, /orders, /payments confirm, plus admin endpoints
-- Angular app: restaurant list/detail, cart, checkout, orders
-- User context by header X-User-Id
-No JWT yet in v2 (keep it simple). Security will be v3-pro.
+# ZomatoX v2 Upgrade (from v1) — PostgreSQL + Flyway + Owner Portal + Delivery Partner + Ratings/Reviews
 
-[PRIMARY GOAL]
-Upgrade v1 to v2 with:
-1) Database migration: switch H2 → PostgreSQL + Flyway (mandatory)
-2) Add Roles and Portals: RESTAURANT_OWNER and DELIVERY_PARTNER
-3) Owner can manage menu and process orders (CONFIRMED → PREPARING → READY_FOR_PICKUP)
-4) Delivery partner can accept and deliver (PICKED_UP → OUT_FOR_DELIVERY → DELIVERED)
-5) Ratings & reviews: customer can rate/review after delivery only
-6) Order event timeline (store every status change), viewable by customer
+## ROLE
 
-[UPGRADE ORDER — MUST FOLLOW]
-A) Postgres + Flyway (first, before everything)
+You are a **senior full-stack architect and lead engineer**.
+
+You are upgrading an existing **v1 codebase of “ZomatoX”** (restaurant discovery + menu + cart + order + mock payment) to **v2**.
+
+**Important requirements:**
+
+* Keep **v1 endpoints working (backward compatible)**
+* Add **v2 features**
+* Output must be **copy-paste ready and compile/run**
+
+---
+
+# INPUT CONTEXT
+
+Assume **v1 already exists with:**
+
+### Backend
+
+* Spring Boot 3
+* Java 17
+* H2 database
+
+### Entities
+
+* `User`
+* `Restaurant`
+* `MenuItem`
+* `Cart` / `CartItem`
+* `Address`
+* `Order` / `OrderItem`
+* `Payment`
+
+### APIs
+
+```
+/restaurants
+/cart
+/orders
+/payments confirm
+```
+
+Plus **admin endpoints**
+
+### Frontend
+
+Angular app with:
+
+* restaurant list/detail
+* cart
+* checkout
+* orders page
+
+### User Context
+
+User identity passed via header:
+
+```
+X-User-Id
+```
+
+No JWT yet.
+
+Security will be added in **v3-pro**.
+
+---
+
+# PRIMARY GOAL
+
+Upgrade **v1 → v2** with the following capabilities:
+
+### 1️⃣ Database Migration
+
+Switch database:
+
+```
+H2 → PostgreSQL
+```
+
+Use:
+
+```
+Flyway migrations (mandatory)
+```
+
+---
+
+### 2️⃣ Roles and Portals
+
+Add new user roles:
+
+* `RESTAURANT_OWNER`
+* `DELIVERY_PARTNER`
+
+---
+
+### 3️⃣ Owner Capabilities
+
+Restaurant owners can:
+
+* Manage menu items
+* Process order lifecycle
+
+Order flow:
+
+```
+CONFIRMED → PREPARING → READY_FOR_PICKUP
+```
+
+---
+
+### 4️⃣ Delivery Partner Capabilities
+
+Delivery partners can:
+
+* Accept delivery jobs
+* Deliver orders
+
+Delivery flow:
+
+```
+PICKED_UP → OUT_FOR_DELIVERY → DELIVERED
+```
+
+---
+
+### 5️⃣ Ratings & Reviews
+
+Customers can:
+
+* Rate restaurants
+* Add reviews
+
+Constraints:
+
+* Only **after delivery**
+* Only **once per order**
+
+---
+
+### 6️⃣ Order Event Timeline
+
+Every status change must be recorded.
+
+Customers should be able to view the **order timeline**.
+
+---
+
+# UPGRADE ORDER — MUST FOLLOW
+
+Upgrade steps must be implemented in this order:
+
+```
+A) Postgres + Flyway (first)
 B) Role model + simple role checks (no JWT)
 C) Owner portal features
 D) Delivery partner features
 E) Reviews + constraints
 F) Frontend UI upgrades
+```
 
-[STACK — v2]
-Backend:
-- Java 17, Spring Boot 3
-- Spring Web, Validation, Spring Data JPA
-- DB: PostgreSQL
-- Migrations: Flyway only
-- OpenAPI/Swagger + Actuator
-- JUnit 5 tests
+---
 
-Frontend:
-- Angular 17 + Tailwind
-- Role-based routing using simple local role in v2 (no JWT yet)
-- State: RxJS store
-- Keep customer UI same, add Owner + Delivery sections
+# STACK — v2
 
-[DATA MODEL CHANGES — v2]
-Modify/add entities/tables while preserving v1:
-- users: add role column (CUSTOMER, OWNER, DELIVERY_PARTNER, ADMIN(optional))
-- restaurants: add owner_user_id (FK users)
-- menu_items: keep, ensure restaurant_id FK
-- orders: add:
-  - status expanded: CREATED → PAYMENT_PENDING → PAID → CONFIRMED → PREPARING → READY_FOR_PICKUP → PICKED_UP → OUT_FOR_DELIVERY → DELIVERED
-  - delivery_partner_user_id (nullable)
-  - updated_at
-- order_events (NEW): id, order_id, status, message, created_at
-- reviews (NEW): id, order_id, restaurant_id, user_id, rating(1-5), comment, created_at
-Constraints:
-- review allowed only if order status is DELIVERED and reviewer is the same user.
-- only one review per order.
+## Backend
 
-[API CONTRACTS — v2 ADDS (KEEP v1 APIs WORKING)]
-Keep existing v1 endpoints unchanged where possible.
+* Java 17
+* Spring Boot 3
+* Spring Web
+* Spring Validation
+* Spring Data JPA
+* PostgreSQL
+* Flyway (migrations only)
+* OpenAPI / Swagger
+* Actuator
+* JUnit 5
 
-Owner APIs (role OWNER; check via X-User-Role header or resolve from user table by X-User-Id):
-- GET /api/owner/restaurants (restaurants owned by current owner)
-- POST /api/owner/restaurants (create restaurant owned by current owner)
-- PUT /api/owner/restaurants/{id} (update)
-- POST /api/owner/restaurants/{id}/menu-items (add item)
-- PUT /api/owner/menu-items/{id} (update price/stock/available)
-- GET /api/owner/orders?status=CONFIRMED|PREPARING|READY_FOR_PICKUP
-- POST /api/owner/orders/{orderId}/status (PREPARING or READY_FOR_PICKUP)
+---
 
-Delivery Partner APIs (role DELIVERY_PARTNER):
-- GET /api/delivery/jobs?status=AVAILABLE|ASSIGNED
-  - AVAILABLE means orders READY_FOR_PICKUP with no delivery_partner assigned
-- POST /api/delivery/jobs/{orderId}/accept
-- POST /api/delivery/orders/{orderId}/status (PICKED_UP, OUT_FOR_DELIVERY, DELIVERED)
+## Frontend
 
-Customer additions:
-- POST /api/restaurants/{id}/reviews (orderId, rating, comment)
-- GET /api/restaurants/{id}/reviews?page=
-- GET /api/orders/{id}/events (timeline)
+* Angular 17
+* Tailwind CSS
+* Role-based routing using **local role state**
+* State management using **RxJS store**
 
-Admin endpoints from v1 can remain, but owner endpoints are preferred for v2.
+Customer UI from **v1 should remain unchanged**.
 
-[BACKWARD COMPATIBILITY RULES]
-- /api/restaurants, /api/cart, /api/orders, /api/payments confirm must still work for CUSTOMER.
-- Header X-User-Id remains for v2.
-- Add optional header X-User-Role for dev testing. If not present, derive role from user table.
+New sections must be added for:
 
-[BACKEND ARCHITECTURE]
-Base package: com.example.zomatox
-Structure:
-controller, dto, entity, repository, service, config, exception, util
-- Add OrderStateMachine validator in service to prevent illegal transitions.
-- Every status change must create an order_events record.
-- Global exception handler response format:
-{ "message": "...", "validationErrors": { "field": "error" } }
-Logging: @Slf4j in services.
+* Owner
+* Delivery partner
 
-[FLYWAY REQUIREMENTS]
-- Provide docker-compose.yml for postgres
-- Provide Flyway migrations:
-  - V1__init.sql (from v1 schema)
-  - V2__add_roles_owner_delivery_reviews_events.sql (v2 additions)
-- Provide seed data SQL or Java initializer:
-  - users: customer, owner, delivery partner
-  - restaurants mapped to owner
-  - menu items
-  - 2-3 orders in different statuses for demo
+---
 
-[FRONTEND REQUIREMENTS — v2]
-Keep customer pages from v1.
+# DATA MODEL CHANGES — v2
+
+Modify or add the following entities while preserving v1 schema.
+
+---
+
+## Users Table
+
+Add column:
+
+```
+role
+```
+
+Values:
+
+```
+CUSTOMER
+OWNER
+DELIVERY_PARTNER
+ADMIN (optional)
+```
+
+---
+
+## Restaurants Table
+
 Add:
-Owner portal routes:
-- /owner/restaurants
-- /owner/menu/:restaurantId
-- /owner/orders (queue with status actions)
 
-Delivery portal routes:
-- /delivery/jobs (available + assigned)
-- /delivery/order/:id (status buttons)
+```
+owner_user_id (FK → users)
+```
 
-Customer additions:
-- restaurant reviews section
-- order timeline events view
+---
 
-Frontend integration:
-- Continue using X-User-Id header.
-- Add a role switch dropdown in header to switch between seeded users (customer/owner/delivery) for demo.
+## Menu Items
 
-[TESTS — v2 MINIMUM]
-- OrderTransitionTest:
-  - CONFIRMED → PREPARING → READY_FOR_PICKUP allowed
-  - invalid transitions rejected
-- DeliveryAcceptTest:
-  - cannot accept unless READY_FOR_PICKUP and unassigned
-- ReviewConstraintsTest:
-  - cannot review unless DELIVERED
-  - only one review per order
-- FlywayMigrationTest (optional): app starts and migrations apply
+Keep existing structure but ensure:
 
-[RUN INSTRUCTIONS — MUST OUTPUT]
-Backend:
-- docker-compose up -d (postgres)
-- mvn spring-boot:run
-Frontend:
-- npm i
-- ng serve
+```
+restaurant_id FK
+```
 
-Provide curl examples:
-- create owner restaurant
-- owner updates order status to PREPARING/READY_FOR_PICKUP
-- delivery accepts job
-- delivery marks DELIVERED
-- customer posts review
+---
 
-[OUTPUT FORMAT — MUST FOLLOW]
-1) Show what files to ADD/MODIFY from v1 (upgrade diff checklist)
-2) Provide updated repository tree
-3) Provide full code for new/changed files (copy-paste ready)
-4) Provide Flyway migrations and docker-compose
-5) Provide updated seed data
-6) Provide updated Angular pages/services
-7) Provide tests + run steps + curl
-8) At the end output:
-[GIT TAG COMMANDS]
+## Orders Table
+
+Add fields:
+
+```
+delivery_partner_user_id (nullable)
+updated_at
+```
+
+Expanded status enum:
+
+```
+CREATED
+PAYMENT_PENDING
+PAID
+CONFIRMED
+PREPARING
+READY_FOR_PICKUP
+PICKED_UP
+OUT_FOR_DELIVERY
+DELIVERED
+```
+
+---
+
+## Order Events (NEW TABLE)
+
+```
+id
+order_id
+status
+message
+created_at
+```
+
+Used for **timeline history**.
+
+---
+
+## Reviews (NEW TABLE)
+
+Fields:
+
+```
+id
+order_id
+restaurant_id
+user_id
+rating (1-5)
+comment
+created_at
+```
+
+---
+
+### Review Constraints
+
+* Order must be **DELIVERED**
+* Reviewer must be **same user**
+* **Only one review per order**
+
+---
+
+# API CONTRACTS — v2
+
+All **v1 APIs must continue working**.
+
+---
+
+# Owner APIs
+
+Role: `OWNER`
+
+Authentication source:
+
+```
+X-User-Role header
+or
+resolve from DB using X-User-Id
+```
+
+### Owner Restaurant APIs
+
+```
+GET  /api/owner/restaurants
+POST /api/owner/restaurants
+PUT  /api/owner/restaurants/{id}
+```
+
+---
+
+### Menu Management
+
+```
+POST /api/owner/restaurants/{id}/menu-items
+PUT  /api/owner/menu-items/{id}
+```
+
+---
+
+### Owner Order Queue
+
+```
+GET /api/owner/orders?status=CONFIRMED|PREPARING|READY_FOR_PICKUP
+```
+
+Update status:
+
+```
+POST /api/owner/orders/{orderId}/status
+```
+
+Allowed transitions:
+
+```
+PREPARING
+READY_FOR_PICKUP
+```
+
+---
+
+# Delivery Partner APIs
+
+Role: `DELIVERY_PARTNER`
+
+### Delivery Jobs
+
+```
+GET /api/delivery/jobs?status=AVAILABLE|ASSIGNED
+```
+
+AVAILABLE means:
+
+```
+READY_FOR_PICKUP orders
+with no delivery partner assigned
+```
+
+---
+
+### Accept Delivery
+
+```
+POST /api/delivery/jobs/{orderId}/accept
+```
+
+---
+
+### Update Delivery Status
+
+```
+POST /api/delivery/orders/{orderId}/status
+```
+
+Statuses:
+
+```
+PICKED_UP
+OUT_FOR_DELIVERY
+DELIVERED
+```
+
+---
+
+# Customer APIs
+
+### Post Review
+
+```
+POST /api/restaurants/{id}/reviews
+```
+
+Body:
+
+```
+orderId
+rating
+comment
+```
+
+---
+
+### Fetch Reviews
+
+```
+GET /api/restaurants/{id}/reviews?page=
+```
+
+---
+
+### Order Timeline
+
+```
+GET /api/orders/{id}/events
+```
+
+---
+
+# BACKWARD COMPATIBILITY RULES
+
+These APIs must **still work exactly as in v1**:
+
+```
+/api/restaurants
+/api/cart
+/api/orders
+/api/payments confirm
+```
+
+User identification:
+
+```
+X-User-Id header
+```
+
+Optional dev header:
+
+```
+X-User-Role
+```
+
+If role header missing:
+
+Resolve role from **users table**.
+
+---
+
+# BACKEND ARCHITECTURE
+
+Base package:
+
+```
+com.example.zomatox
+```
+
+### Package Structure
+
+```
+controller
+dto
+entity
+repository
+service
+config
+exception
+util
+```
+
+---
+
+### Order State Machine
+
+Add service validator:
+
+```
+OrderStateMachine
+```
+
+Responsibilities:
+
+* Prevent illegal order transitions
+* Validate role permissions
+
+---
+
+### Order Event Logging
+
+Every status change must create:
+
+```
+order_events record
+```
+
+---
+
+### Global Exception Handler
+
+Response format:
+
+```json
+{
+  "message": "Validation failed",
+  "validationErrors": {
+    "field": "error message"
+  }
+}
+```
+
+---
+
+### Logging
+
+Services must use:
+
+```
+@Slf4j
+```
+
+---
+
+# FLYWAY REQUIREMENTS
+
+Provide:
+
+### Docker Compose
+
+PostgreSQL container.
+
+---
+
+### Flyway Migrations
+
+```
+V1__init.sql
+V2__add_roles_owner_delivery_reviews_events.sql
+```
+
+---
+
+### Seed Data
+
+Provide SQL or Java initializer.
+
+Seed:
+
+Users
+
+```
+customer
+owner
+delivery partner
+```
+
+Restaurants mapped to owners.
+
+Menu items.
+
+Orders in different statuses.
+
+---
+
+# FRONTEND REQUIREMENTS — v2
+
+Customer pages remain unchanged.
+
+Add new portals.
+
+---
+
+## Owner Portal
+
+Routes:
+
+```
+/owner/restaurants
+/owner/menu/:restaurantId
+/owner/orders
+```
+
+Features:
+
+* Manage restaurants
+* Manage menu
+* Process order queue
+
+---
+
+## Delivery Portal
+
+Routes:
+
+```
+/delivery/jobs
+/delivery/order/:id
+```
+
+Features:
+
+* Accept jobs
+* Update delivery status
+
+---
+
+## Customer Additions
+
+Add:
+
+* Restaurant review section
+* Order timeline view
+
+---
+
+## Frontend Integration
+
+Continue using header:
+
+```
+X-User-Id
+```
+
+Add demo role switch dropdown.
+
+Example users:
+
+```
+customer
+owner
+delivery partner
+```
+
+---
+
+# TESTS — v2 MINIMUM
+
+### OrderTransitionTest
+
+Valid transitions:
+
+```
+CONFIRMED → PREPARING → READY_FOR_PICKUP
+```
+
+Invalid transitions must fail.
+
+---
+
+### DeliveryAcceptTest
+
+Acceptance allowed only if:
+
+```
+status = READY_FOR_PICKUP
+delivery partner not assigned
+```
+
+---
+
+### ReviewConstraintsTest
+
+Validation rules:
+
+* Order must be DELIVERED
+* Only one review per order
+
+---
+
+### FlywayMigrationTest (optional)
+
+Ensure:
+
+* App starts successfully
+* Flyway migrations apply
+
+---
+
+# RUN INSTRUCTIONS
+
+## Backend
+
+Start PostgreSQL
+
+```bash
+docker-compose up -d
+```
+
+Run backend
+
+```bash
+mvn spring-boot:run
+```
+
+---
+
+## Frontend
+
+Install dependencies
+
+```bash
+npm i
+```
+
+Start Angular
+
+```bash
+ng serve
+```
+
+---
+
+# CURL EXAMPLES
+
+### Create Owner Restaurant
+
+```
+curl -X POST /api/owner/restaurants
+```
+
+---
+
+### Owner Updates Order Status
+
+```
+POST /api/owner/orders/{id}/status
+```
+
+Body:
+
+```
+PREPARING
+```
+
+or
+
+```
+READY_FOR_PICKUP
+```
+
+---
+
+### Delivery Accepts Job
+
+```
+POST /api/delivery/jobs/{orderId}/accept
+```
+
+---
+
+### Delivery Marks Delivered
+
+```
+POST /api/delivery/orders/{orderId}/status
+```
+
+Body:
+
+```
+DELIVERED
+```
+
+---
+
+### Customer Posts Review
+
+```
+POST /api/restaurants/{id}/reviews
+```
+
+---
+
+# OUTPUT FORMAT — MUST FOLLOW
+
+Your final output must contain:
+
+1️⃣ Files to **ADD/MODIFY** from v1
+2️⃣ Updated **repository tree**
+3️⃣ **Full code** for new/changed files
+4️⃣ **Flyway migrations + docker-compose**
+5️⃣ **Seed data**
+6️⃣ **Angular updates**
+7️⃣ **Tests + run steps + curl examples**
+
+---
+
+# GIT TAG COMMANDS
+
+```bash
 git status
-git add .
-git commit -m "v2: Postgres+Flyway + owner portal + delivery partner + reviews + order events"
-git tag v2-zomatox-owner-delivery
-git tag -n
 
-[QUALITY BAR]
-- Must compile and run on PostgreSQL with Flyway
-- No placeholders that break compilation
-- v1 APIs must continue working
-- Clean DTO validation + global error handler
-- No copyrighted assets; generic icons only
+git add .
+
+git commit -m "v2: Postgres+Flyway + owner portal + delivery partner + reviews + order events"
+
+git tag v2-zomatox-owner-delivery
+
+git tag -n
+```
+
+---
+
+# QUALITY BAR
+
+The solution must:
+
+* Compile successfully
+* Run on **PostgreSQL + Flyway**
+* Maintain **v1 API compatibility**
+* Use **clean DTO validation**
+* Provide **global error handling**
+* Avoid copyrighted assets
+* Use **generic icons only**
+
+---
+ 
