@@ -12,14 +12,21 @@ import {
   Restaurant,
   SignupRequest,
 } from "./models";
+import { AuthService } from "./auth.service";
 
 const API = "http://localhost:8080/api";
 
 export const apiHeadersInterceptor: HttpInterceptorFn = (req, next) => {
-  const uc = inject(UserContextService);
+  const auth = inject(AuthService);
+  const token = auth.accessToken;
+
+  if (!token) {
+    return next(req);
+  }
+
   const cloned = req.clone({
     setHeaders: {
-      "X-User-Id": String(uc.userId),
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -141,6 +148,4 @@ export class ApiService {
   me() {
     return this.http.get<any>(`${API}/auth/me`);
   }
-
-  
 }
