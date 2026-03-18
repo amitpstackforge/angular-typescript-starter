@@ -1,6 +1,5 @@
 import { Injectable, inject } from "@angular/core";
 import { HttpClient, HttpInterceptorFn } from "@angular/common/http";
-import { UserContextService } from "./user-context.service";
 import {
   Address,
   Cart,
@@ -11,6 +10,7 @@ import {
   RefreshRequest,
   Restaurant,
   SignupRequest,
+  TokenPairResponse,
 } from "./models";
 import { AuthService } from "./auth.service";
 
@@ -128,7 +128,7 @@ export class ApiService {
   }
 
   signup(payload: SignupRequest) {
-    return this.http.post<any>(`${API}/auth/signup`, payload);
+    return this.http.post<TokenPairResponse>(`${API}/auth/signup`, payload);
   }
 
   // logout(payload: LogoutRequest) -> POST /api/

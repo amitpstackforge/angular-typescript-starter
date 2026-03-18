@@ -9,6 +9,7 @@ import { OwnerOrdersComponent } from './features/owner/owner-orders.component';
 import { OwnerRestaurantsComponent } from './features/owner/owner-restaurants.component';
 import { DeliveryJobsComponent } from './features/delivery/delivery-jobs.component';
 import { DeliveryOrderComponent } from './features/delivery/delivery-order.component';
+import { SignupComponent } from './features/auth/signup.component';
 import { deliveryGuard, ownerGuard } from './core/role.guard';
 
 export const routes: Routes = [
@@ -16,6 +17,7 @@ export const routes: Routes = [
 
   { path: 'restaurants', component: RestaurantListComponent },
   { path: 'restaurants/:id', component: RestaurantDetailComponent },
+  { path: 'signup', component: SignupComponent },
   { path: 'cart', component: CartComponent },
   { path: 'checkout', component: CheckoutComponent },
   { path: 'orders', component: OrderListComponent },

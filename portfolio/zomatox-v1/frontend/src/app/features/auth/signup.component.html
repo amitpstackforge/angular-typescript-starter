@@ -1,0 +1,95 @@
+<section class="mx-auto max-w-md">
+  <h1 class="mb-2 text-2xl font-bold">Create your account</h1>
+  <p class="mb-6 text-sm text-slate-600">
+    Sign up to place orders and track your deliveries.
+  </p>
+
+  <form
+    [formGroup]="form"
+    (ngSubmit)="submit()"
+    class="space-y-4 rounded-xl border bg-white p-5 shadow-sm"
+    novalidate
+  >
+    <div>
+      <label for="name" class="mb-1 block text-sm font-medium">Name</label>
+      <input
+        id="name"
+        type="text"
+        formControlName="name"
+        class="w-full rounded border px-3 py-2"
+        placeholder="Your full name"
+      />
+      <p
+        *ngIf="isTouchedAndInvalid('name') && form.controls.name.hasError('required')"
+        class="mt-1 text-xs text-red-600"
+      >
+        Name is required.
+      </p>
+      <p *ngIf="backendErrorFor('name')" class="mt-1 text-xs text-red-600">
+        {{ backendErrorFor("name") }}
+      </p>
+    </div>
+
+    <div>
+      <label for="email" class="mb-1 block text-sm font-medium">Email</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        class="w-full rounded border px-3 py-2"
+        placeholder="you@example.com"
+      />
+      <p
+        *ngIf="isTouchedAndInvalid('email') && form.controls.email.hasError('required')"
+        class="mt-1 text-xs text-red-600"
+      >
+        Email is required.
+      </p>
+      <p
+        *ngIf="isTouchedAndInvalid('email') && form.controls.email.hasError('email')"
+        class="mt-1 text-xs text-red-600"
+      >
+        Enter a valid email address.
+      </p>
+      <p *ngIf="backendErrorFor('email')" class="mt-1 text-xs text-red-600">
+        {{ backendErrorFor("email") }}
+      </p>
+    </div>
+
+    <div>
+      <label for="password" class="mb-1 block text-sm font-medium">Password</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        class="w-full rounded border px-3 py-2"
+        placeholder="Create a password"
+      />
+      <p
+        *ngIf="isTouchedAndInvalid('password') && form.controls.password.hasError('required')"
+        class="mt-1 text-xs text-red-600"
+      >
+        Password is required.
+      </p>
+      <p *ngIf="backendErrorFor('password')" class="mt-1 text-xs text-red-600">
+        {{ backendErrorFor("password") }}
+      </p>
+    </div>
+
+    <div *ngIf="errorMessage()" class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+      {{ errorMessage() }}
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="loading()"
+      class="w-full rounded bg-black px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      {{ loading() ? "Creating account..." : "Sign up" }}
+    </button>
+
+    <a routerLink="/restaurants" class="block text-center text-sm text-slate-600 hover:underline">
+      Back to restaurants
+    </a>
+  </form>
+</section>
