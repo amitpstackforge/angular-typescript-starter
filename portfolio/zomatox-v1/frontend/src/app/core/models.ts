@@ -73,3 +73,42 @@ export interface OwnerRestaurant {
   city: string;
   cuisineType: string;
 }
+
+export type AuthRole = 'CUSTOMER' | 'OWNER' | 'DELIVERY_PARTNER' | 'ADMIN';
+
+export type AuthUserProfile = {
+  id: number;
+  name: string;
+  email: string;
+  role: AuthRole;
+};
+
+export type TokenPairResponse = {
+  accessToken: string;
+  refreshToken: string;
+  user: AuthUserProfile;
+};
+
+export type AuthErrorEnvelope = {
+  message: string;
+  validationErrors: Record<string, string>;
+};
+
+export type SignupRequest = {
+  name: string;
+  email: string;
+  password: string;
+};
+
+export type LoginRequest = {
+  email: string;
+  password: string;
+};
+
+export type RefreshRequest = {
+  refreshToken: string;
+};
+
+export type LogoutRequest = {
+  refreshToken: string;
+};
