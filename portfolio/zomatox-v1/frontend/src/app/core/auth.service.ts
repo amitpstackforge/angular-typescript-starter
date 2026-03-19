@@ -8,16 +8,29 @@ export class AuthService {
   private readonly currentUserKey = "zomatox.currentUser";
 
   setSession(session: TokenPairResponse): void {
-    localStorage.setItem(this.accessTokenKey, session.accessToken);
-    localStorage.setItem(this.refreshTokenKey, session.refreshToken);
-    localStorage.setItem(this.currentUserKey, JSON.stringify(session.user));
+    this.replaceTokens(session.accessToken, session.refreshToken);
+    this.setCurrentUser(session.user);
   }
 
-  clearSession(session: TokenPairResponse): void {
+  replaceTokens(accessToken: string, refreshToken: string): void {
+    localStorage.setItem(this.accessTokenKey, accessToken);
+    localStorage.setItem(this.refreshTokenKey, refreshToken);
+  }
+
+  setCurrentUser(user: AuthUserProfile): void {
+    localStorage.setItem(this.currentUserKey, JSON.stringify(user));
+  }
+
+  clearSession(): void {
     localStorage.removeItem(this.accessTokenKey);
     localStorage.removeItem(this.refreshTokenKey);
     localStorage.removeItem(this.currentUserKey);
   }
+
+  isLoggedIn(): boolean {
+    return !!(this.accessToken && this.refreshToken && this.currentUser);
+  }
+
   get accessToken(): string | null {
     return localStorage.getItem(this.accessTokenKey);
   }

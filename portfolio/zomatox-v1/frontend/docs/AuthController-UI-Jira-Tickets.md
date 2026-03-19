@@ -167,9 +167,28 @@ Source API contract: `docs/AuthController.md`
   - Retry original request only once after successful refresh.
   - If refresh fails (`Invalid refresh token` or expired/revoked), clear session and route to `/login`.
 - Beginner steps:
-  1. Guard against infinite retry loops (use request context/flag).
-  2. Skip refresh for `/api/auth/login` and `/api/auth/signup` calls.
-  3. Test by manually invalidating access token.
+  1. Create `src/app/core/auth.interceptor.ts` and move auth header logic there.
+  2. Add a request context flag like `REFRESH_RETRY_ATTEMPTED` to prevent infinite loops.
+  3. Add a response error handler in interceptor:
+     - only handle `401`
+     - skip `/api/auth/login`, `/api/auth/signup`, and `/api/auth/refresh`
+  4. Read refresh token from `AuthService.refreshToken`.
+  5. If refresh token is missing:
+     - call `AuthService.clearSession()`
+     - route to `/login`
+  6. Call refresh endpoint (`POST /api/auth/refresh`) with `{ refreshToken }`.
+  7. On refresh success:
+     - replace both stored tokens in `AuthService`
+     - retry original request one time with retry flag set
+  8. On refresh failure:
+     - clear session
+     - route to `/login`
+  9. Update `src/main.ts` interceptor order so refresh interceptor runs before header interceptor.
+  10. Manual test:
+      - login/signup to get valid refresh token
+      - edit localStorage access token to an invalid value
+      - trigger protected API call and verify request succeeds after auto-refresh
+      - then replace refresh token with invalid value and verify app redirects to `/login`
 - Acceptance criteria:
   - Expired access token recovers automatically when refresh token is valid.
   - Session is cleared when refresh fails.

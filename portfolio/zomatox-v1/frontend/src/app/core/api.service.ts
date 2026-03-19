@@ -1,5 +1,5 @@
 import { Injectable, inject } from "@angular/core";
-import { HttpClient, HttpInterceptorFn } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import {
   Address,
   Cart,
@@ -12,26 +12,8 @@ import {
   SignupRequest,
   TokenPairResponse,
 } from "./models";
-import { AuthService } from "./auth.service";
 
 const API = "http://localhost:8080/api";
-
-export const apiHeadersInterceptor: HttpInterceptorFn = (req, next) => {
-  const auth = inject(AuthService);
-  const token = auth.accessToken;
-
-  if (!token) {
-    return next(req);
-  }
-
-  const cloned = req.clone({
-    setHeaders: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return next(cloned);
-};
 
 @Injectable({ providedIn: "root" })
 export class ApiService {
