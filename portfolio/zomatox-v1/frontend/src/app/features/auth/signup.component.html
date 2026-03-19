@@ -20,7 +20,9 @@
         placeholder="Your full name"
       />
       <p
-        *ngIf="isTouchedAndInvalid('name') && form.controls.name.hasError('required')"
+        *ngIf="
+          isTouchedAndInvalid('name') && form.controls.name.hasError('required')
+        "
         class="mt-1 text-xs text-red-600"
       >
         Name is required.
@@ -40,13 +42,18 @@
         placeholder="you@example.com"
       />
       <p
-        *ngIf="isTouchedAndInvalid('email') && form.controls.email.hasError('required')"
+        *ngIf="
+          isTouchedAndInvalid('email') &&
+          form.controls.email.hasError('required')
+        "
         class="mt-1 text-xs text-red-600"
       >
         Email is required.
       </p>
       <p
-        *ngIf="isTouchedAndInvalid('email') && form.controls.email.hasError('email')"
+        *ngIf="
+          isTouchedAndInvalid('email') && form.controls.email.hasError('email')
+        "
         class="mt-1 text-xs text-red-600"
       >
         Enter a valid email address.
@@ -57,7 +64,9 @@
     </div>
 
     <div>
-      <label for="password" class="mb-1 block text-sm font-medium">Password</label>
+      <label for="password" class="mb-1 block text-sm font-medium"
+        >Password</label
+      >
       <input
         id="password"
         type="password"
@@ -66,7 +75,10 @@
         placeholder="Create a password"
       />
       <p
-        *ngIf="isTouchedAndInvalid('password') && form.controls.password.hasError('required')"
+        *ngIf="
+          isTouchedAndInvalid('password') &&
+          form.controls.password.hasError('required')
+        "
         class="mt-1 text-xs text-red-600"
       >
         Password is required.
@@ -76,7 +88,10 @@
       </p>
     </div>
 
-    <div *ngIf="errorMessage()" class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+    <div
+      *ngIf="errorMessage()"
+      class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
+    >
       {{ errorMessage() }}
     </div>
 
@@ -88,8 +103,11 @@
       {{ loading() ? "Creating account..." : "Sign up" }}
     </button>
 
-    <a routerLink="/restaurants" class="block text-center text-sm text-slate-600 hover:underline">
-      Back to restaurants
+    <a
+      routerLink="/login"
+      class="block text-center text-sm text-slate-600 hover:underline"
+    >
+      Back to Login
     </a>
   </form>
 </section>

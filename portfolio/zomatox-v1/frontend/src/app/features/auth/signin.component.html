@@ -1,0 +1,68 @@
+<div class="bg-white p-8 rounded-xl shadow-lg w-96">
+  <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+
+  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <!-- Email -->
+    <div class="mb-4">
+      <label class="block text-sm font-medium mb-1"> Email </label>
+
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="Enter your email"
+        class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="f.email.touched && f.email.errors?.['required']"
+      >
+        Email is required
+      </p>
+      <p class="text-red-500 text-sm" *ngIf="backendErrorFor('email')">
+        {{ backendErrorFor("email") }}
+      </p>
+
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="f.email.touched && f.email.errors?.['email']"
+      >
+        Invalid email format
+      </p>
+    </div>
+
+    <!-- Password -->
+    <div class="mb-6">
+      <label class="block text-sm font-medium mb-1"> Password </label>
+
+      <input
+        type="password"
+        placeholder="Enter your password"
+        formControlName="password"
+        class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+      <p
+        class="text-red-500 text-sm"
+        *ngIf="f.password.touched && f.password.errors?.['required']"
+      >
+        Password is required
+      </p>
+      <p class="text-red-500 text-sm" *ngIf="backendErrorFor('password')">
+        {{ backendErrorFor("password") }}
+      </p>
+    </div>
+
+    <!-- Login Button -->
+    <button
+      [disabled]="signInForm.invalid || isLoading()"
+      type="submit"
+      class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+    >
+      <span *ngIf="!isLoading()">Sign In</span>
+      <span *ngIf="isLoading()">Waiting...</span>
+    </button>
+  </form>
+
+  <p class="text-center text-sm mt-4">
+    <a routerLink="/signup" class="text-blue-600 hover:underline"> Sign up </a>
+  </p>
+</div>
