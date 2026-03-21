@@ -1,59 +1,71 @@
-import { CommonModule } from '@angular/common';
-import { Component, computed, inject, signal } from '@angular/core';
-import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
-import { ApiService } from './core/api.service';
-import { AuthService } from './core/auth.service';
-import { UserContextService } from './core/user-context.service';
-import { CartStore } from './core/cart.store';
+import { CommonModule } from "@angular/common";
+import { Component, computed, inject, signal } from "@angular/core";
+import {
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from "@angular/router";
+import { ApiService } from "./core/api.service";
+import { AuthService } from "./core/auth.service";
+import { UserContextService } from "./core/user-context.service";
+import { CartStore } from "./core/cart.store";
 
 @Component({
   standalone: true,
-  selector: 'app-root',
+  selector: "app-root",
   imports: [CommonModule, RouterOutlet, RouterLink],
   template: `
-  <div class="min-h-screen">
-    <header *ngIf="showHeader()" class="sticky top-0 z-10 bg-white border-b">
-      <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
-        <a routerLink="/restaurants" class="font-bold text-lg">ZomatoX</a>
+    <div class="min-h-screen">
+      <header *ngIf="showHeader()" class="sticky top-0 z-10 bg-white border-b">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
+          <a routerLink="/restaurants" class="font-bold text-lg">ZomatoX</a>
 
-        <nav class="flex gap-3 text-sm">
-         <a routerLink="/restaurants" class="hover:underline">Customer</a>
-          <a routerLink="/owner/orders" class="hover:underline">Owner</a>
-           <a routerLink="/delivery/jobs" class="hover:underline">Delivery</a>
-             <a routerLink="/cart" class="hover:underline">Cart</a>
+          <nav class="flex gap-3 text-sm">
+            <a routerLink="/restaurants" class="hover:underline">Customer</a>
+            <a routerLink="/owner/orders" class="hover:underline">Owner</a>
+            <a routerLink="/delivery/jobs" class="hover:underline">Delivery</a>
+            <a routerLink="/cart" class="hover:underline">Cart</a>
             <a routerLink="/orders" class="hover:underline">Orders</a>
-        </nav>
+          </nav>
 
-        <div class="ml-auto flex items-center gap-3">
-          <select class="border rounded px-2 py-1 text-sm"
-                  [value]="selectedKey()"
-                  (change)="switchUser($any($event.target).value)">
-           <option *ngFor="let u of users" [value]="u.id + ':' + u.role">
-              {{u.label}} • {{u.role}}
-            </option>
-          </select>
+          <div class="ml-auto flex items-center gap-3">
+            <select
+              class="border rounded px-2 py-1 text-sm"
+              [value]="selectedKey()"
+              (change)="switchUser($any($event.target).value)"
+            >
+              <option *ngFor="let u of users" [value]="u.id + ':' + u.role">
+                {{ u.label }} • {{ u.role }}
+              </option>
+            </select>
 
-          <div class="text-sm bg-slate-100 rounded px-2 py-1">
-            Cart: {{cartCount()}}
+            <div class="text-sm bg-slate-100 rounded px-2 py-1">
+              Cart: {{ cartCount() }}
+            </div>
+            <span class="nav-user-name">
+              {{
+                auth.currentUser?.name + " " + auth.currentUser?.email ||
+                  "Guest"
+              }}
+            </span>
+            <button
+              *ngIf="auth.isLoggedIn()"
+              type="button"
+              class="text-sm border rounded px-3 py-1 disabled:opacity-60 disabled:cursor-not-allowed"
+              [disabled]="logoutLoading()"
+              (click)="logout()"
+            >
+              {{ logoutLoading() ? "Logging out..." : "Logout" }}
+            </button>
           </div>
-
-          <button
-            *ngIf="auth.isLoggedIn()"
-            type="button"
-            class="text-sm border rounded px-3 py-1 disabled:opacity-60 disabled:cursor-not-allowed"
-            [disabled]="logoutLoading()"
-            (click)="logout()"
-          >
-            {{ logoutLoading() ? 'Logging out...' : 'Logout' }}
-          </button>
         </div>
-      </div>
-    </header>
+      </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-6">
-      <router-outlet></router-outlet>
-    </main>
-  </div>
+      <main class="max-w-5xl mx-auto px-4 py-6">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
   `,
 })
 export class AppComponent {
@@ -67,13 +79,20 @@ export class AppComponent {
   // Store the current route so we can decide when to show the header.
   currentUrl = signal(this.router.url);
   // Show the header on every page except the login and signup pages.
-  showHeader = computed(() => !['/login', '/signup'].includes(this.currentUrl()));
+  showHeader = computed(
+    () => !["/login", "/signup"].includes(this.currentUrl()),
+  );
+
+  authLoading = signal(false);
 
   users = this.uc.users;
   selectedKey = computed(() => `${this.uc.userId}:${this.uc.role}`);
-  cartCount = computed(() => this.cartStore.cart()?.items?.reduce((a, x) => a + x.qty, 0) ?? 0);
+  cartCount = computed(
+    () => this.cartStore.cart()?.items?.reduce((a, x) => a + x.qty, 0) ?? 0,
+  );
 
   constructor() {
+    this.initAuth();
     this.cartStore.load();
     // In simple terms: whenever the page changes, update the current URL.
     this.router.events.subscribe((event) => {
@@ -84,8 +103,8 @@ export class AppComponent {
   }
 
   switchUser(v: string) {
-    const [id, role] = v.split(':');
-    const user = this.users.find(u => u.id === Number(id) && u.role === role);
+    const [id, role] = v.split(":");
+    const user = this.users.find((u) => u.id === Number(id) && u.role === role);
     if (user) {
       this.uc.setUser(user);
     }
@@ -113,6 +132,30 @@ export class AppComponent {
   private finalizeLogout() {
     this.auth.clearSession();
     this.logoutLoading.set(false);
-    void this.router.navigate(['/login']);
+    void this.router.navigate(["/login"]);
+  }
+  private initAuth() {
+    if (!this.auth.accessToken) {
+      return;
+    }
+
+    this.authLoading.set(true);
+    this.api.me().subscribe({
+      next: (user) => {
+        if (!user || typeof user.id !== "number") {
+          this.handleInvalidSession();
+          return;
+        }
+        this.auth.setCurrentUser(user);
+        this.authLoading.set(false);
+      },
+      error: () => this.handleInvalidSession(),
+    });
+  }
+
+  private handleInvalidSession() {
+    this.auth.clearSession();
+    this.authLoading.set(false);
+    void this.router.navigate(["/login"]);
   }
 }

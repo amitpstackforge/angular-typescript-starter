@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import {
   Address,
   Cart,
+  AuthUserProfile,
   LoginRequest,
   LogoutRequest,
   MenuItem,
@@ -127,7 +128,11 @@ export class ApiService {
     return this.http.post<any>(`${API}/auth/logout`, payload);
   }
 
+  // me() {
+  //   return this.http.get<any>(`${API}/auth/me`);
+  // }
+
   me() {
-    return this.http.get<any>(`${API}/auth/me`);
+    return this.http.get<AuthUserProfile>(`${API}/auth/me`);
   }
 }
