@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Component, computed, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { ApiService } from './core/api.service';
+import { AuthService } from './core/auth.service';
 import { UserContextService } from './core/user-context.service';
 import { CartStore } from './core/cart.store';
 
@@ -34,6 +36,16 @@ import { CartStore } from './core/cart.store';
           <div class="text-sm bg-slate-100 rounded px-2 py-1">
             Cart: {{cartCount()}}
           </div>
+
+          <button
+            *ngIf="auth.isLoggedIn()"
+            type="button"
+            class="text-sm border rounded px-3 py-1 disabled:opacity-60 disabled:cursor-not-allowed"
+            [disabled]="logoutLoading()"
+            (click)="logout()"
+          >
+            {{ logoutLoading() ? 'Logging out...' : 'Logout' }}
+          </button>
         </div>
       </div>
     </header>
@@ -47,6 +59,11 @@ import { CartStore } from './core/cart.store';
 export class AppComponent {
   private uc = inject(UserContextService);
   private cartStore = inject(CartStore);
+  private api = inject(ApiService);
+  readonly auth = inject(AuthService);
+  private router = inject(Router);
+
+  logoutLoading = signal(false);
 
   users = this.uc.users;
   selectedKey = computed(() => `${this.uc.userId}:${this.uc.role}`);
@@ -63,5 +80,29 @@ export class AppComponent {
       this.uc.setUser(user);
     }
     this.cartStore.load();
+  }
+
+  logout() {
+    if (this.logoutLoading()) {
+      return;
+    }
+
+    const refreshToken = this.auth.refreshToken;
+    if (!refreshToken) {
+      this.finalizeLogout();
+      return;
+    }
+
+    this.logoutLoading.set(true);
+    this.api.logout({ refreshToken }).subscribe({
+      next: () => this.finalizeLogout(),
+      error: () => this.finalizeLogout(),
+    });
+  }
+
+  private finalizeLogout() {
+    this.auth.clearSession();
+    this.logoutLoading.set(false);
+    void this.router.navigate(['/login']);
   }
 }
