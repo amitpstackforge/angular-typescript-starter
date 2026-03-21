@@ -117,10 +117,10 @@ export class ApiService {
   // me() -> GET /api/auth/me
 
   login(payload: LoginRequest) {
-    return this.http.post<any>(`${API}/auth/login`, payload);
+    return this.http.post<TokenPairResponse>(`${API}/auth/login`, payload);
   }
   refresh(payload: RefreshRequest) {
-    return this.http.post<any>(`${API}/auth/refresh`, payload);
+    return this.http.post<TokenPairResponse>(`${API}/auth/refresh`, payload);
   }
 
   logout(payload: LogoutRequest) {

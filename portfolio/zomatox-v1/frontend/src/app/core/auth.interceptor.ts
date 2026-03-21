@@ -22,7 +22,11 @@ import { AuthService } from "./auth.service";
 import { TokenPairResponse } from "./models";
 
 const API = "http://localhost:8080/api";
-const SKIP_REFRESH_PATHS = ["/api/auth/login", "/api/auth/signup", "/api/auth/refresh"];
+const SKIP_REFRESH_PATHS = [
+  "/api/auth/login",
+  "/api/auth/signup",
+  "/api/auth/refresh",
+];
 
 const REFRESH_RETRY_ATTEMPTED = new HttpContextToken<boolean>(() => false);
 const SKIP_AUTH_HEADER = new HttpContextToken<boolean>(() => false);
@@ -113,11 +117,15 @@ function refreshSession(
 ): Observable<TokenPairResponse> {
   if (!refreshInFlight$) {
     refreshInFlight$ = rawHttp
-      .post<TokenPairResponse>(`${API}/auth/refresh`, { refreshToken }, {
-        context: new HttpContext()
-          .set(SKIP_AUTH_HEADER, true)
-          .set(REFRESH_RETRY_ATTEMPTED, true),
-      })
+      .post<TokenPairResponse>(
+        `${API}/auth/refresh`,
+        { refreshToken },
+        {
+          context: new HttpContext()
+            .set(SKIP_AUTH_HEADER, true)
+            .set(REFRESH_RETRY_ATTEMPTED, true),
+        },
+      )
       .pipe(
         tap((session) => {
           auth.replaceTokens(session.accessToken, session.refreshToken);

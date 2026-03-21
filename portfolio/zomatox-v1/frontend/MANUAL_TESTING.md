@@ -136,7 +136,23 @@ Detailed owner checks are also available in:
 3. Verify error states appear (message or retry UI).
 4. Start backend again and verify recovery by refresh or retry button.
 
-## 9. Regression Checklist
+## 9. Refresh Token Flow
+
+1. Log in from `/login` and confirm tokens exist in Local Storage:
+   `zomatox.accessToken`, `zomatox.refreshToken`, `zomatox.currentUser`.
+2. In DevTools, set `zomatox.accessToken` to an invalid value (leave refresh token intact).
+3. Trigger any API call (refresh page, open `/orders`, or add to cart).
+4. Verify a `POST /api/auth/refresh` call is sent and returns 200.
+5. Confirm Local Storage tokens are replaced with new values.
+6. Verify the original request completes successfully after refresh.
+
+Negative case:
+
+1. Remove `zomatox.refreshToken` from Local Storage.
+2. Trigger an API call that requires auth.
+3. Verify user is redirected to `/login` and session is cleared.
+
+## 10. Regression Checklist
 
 1. No route shows Angular template errors in browser console.
 2. All role switches work without full browser restart.

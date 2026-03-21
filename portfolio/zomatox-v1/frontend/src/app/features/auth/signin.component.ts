@@ -1,10 +1,10 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
-import { RouterLink } from "@angular/router";
-import { CartStore } from "../../core/cart.store";
+import { Router, RouterLink } from "@angular/router";
 import { FormBuilder, ReactiveFormsModule, Validators } from "@angular/forms";
 import { ApiService } from "../../core/api.service";
-import { AuthErrorEnvelope, LoginRequest } from "../../core/models";
+import { AuthService } from "../../core/auth.service";
+import { AuthErrorEnvelope, LoginRequest, TokenPairResponse } from "../../core/models";
 
 @Component({
   standalone: true,
@@ -14,6 +14,8 @@ import { AuthErrorEnvelope, LoginRequest } from "../../core/models";
 export class SignInComponent {
   private fb = inject(FormBuilder);
   private api = inject(ApiService);
+  private auth = inject(AuthService);
+  private router = inject(Router);
 
   isLoading = signal(false);
 
@@ -33,6 +35,10 @@ export class SignInComponent {
   }
 
   onSubmit() {
+    if (this.isLoading()) {
+      return;
+    }
+
     this.backendErrors = {};
     this.generalError = "";
 
@@ -46,9 +52,9 @@ export class SignInComponent {
     this.isLoading.set(true);
 
     this.api.login(payload).subscribe({
-      next: (res) => {
-        console.log("signIn success", res);
-        this.isLoading.set(false);
+      next: (session: TokenPairResponse) => {
+        this.auth.setSession(session);
+        this.router.navigate(["/restaurants"]);
       },
 
       error: (err) => {
@@ -61,6 +67,7 @@ export class SignInComponent {
         }
         this.isLoading.set(false);
       },
+      complete: () => this.isLoading.set(false),
     });
   }
 }
