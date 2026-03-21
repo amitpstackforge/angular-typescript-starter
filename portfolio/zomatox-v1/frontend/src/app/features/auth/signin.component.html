@@ -1,68 +1,83 @@
-<div class="bg-white p-8 rounded-xl shadow-lg w-96">
-  <h2 class="text-2xl font-bold text-center mb-6">Login</h2>
+<section class="mx-auto max-w-md">
+  <h1 class="mb-2 text-2xl font-bold">Welcome back</h1>
+  <p class="mb-6 text-sm text-slate-600">
+    Sign in to continue ordering and tracking deliveries.
+  </p>
 
-  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-    <!-- Email -->
-    <div class="mb-4">
-      <label class="block text-sm font-medium mb-1"> Email </label>
-
+  <form
+    [formGroup]="signInForm"
+    (ngSubmit)="onSubmit()"
+    class="space-y-4 rounded-xl border bg-white p-5 shadow-sm"
+    novalidate
+  >
+    <div>
+      <label for="email" class="mb-1 block text-sm font-medium">Email</label>
       <input
+        id="email"
         type="email"
         formControlName="email"
-        placeholder="Enter your email"
-        class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full rounded border px-3 py-2"
+        placeholder="you@example.com"
       />
       <p
-        class="text-red-500 text-sm"
         *ngIf="f.email.touched && f.email.errors?.['required']"
+        class="mt-1 text-xs text-red-600"
       >
-        Email is required
+        Email is required.
       </p>
-      <p class="text-red-500 text-sm" *ngIf="backendErrorFor('email')">
-        {{ backendErrorFor("email") }}
-      </p>
-
       <p
-        class="text-red-500 text-sm"
         *ngIf="f.email.touched && f.email.errors?.['email']"
+        class="mt-1 text-xs text-red-600"
       >
-        Invalid email format
+        Enter a valid email address.
+      </p>
+      <p *ngIf="backendErrorFor('email')" class="mt-1 text-xs text-red-600">
+        {{ backendErrorFor("email") }}
       </p>
     </div>
 
-    <!-- Password -->
-    <div class="mb-6">
-      <label class="block text-sm font-medium mb-1"> Password </label>
-
+    <div>
+      <label for="password" class="mb-1 block text-sm font-medium"
+        >Password</label
+      >
       <input
+        id="password"
         type="password"
-        placeholder="Enter your password"
         formControlName="password"
-        class="w-full border px-3 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full rounded border px-3 py-2"
+        placeholder="Enter your password"
       />
       <p
-        class="text-red-500 text-sm"
         *ngIf="f.password.touched && f.password.errors?.['required']"
+        class="mt-1 text-xs text-red-600"
       >
-        Password is required
+        Password is required.
       </p>
-      <p class="text-red-500 text-sm" *ngIf="backendErrorFor('password')">
+      <p *ngIf="backendErrorFor('password')" class="mt-1 text-xs text-red-600">
         {{ backendErrorFor("password") }}
       </p>
     </div>
 
-    <!-- Login Button -->
-    <button
-      [disabled]="signInForm.invalid || isLoading()"
-      type="submit"
-      class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+    <div
+      *ngIf="generalError"
+      class="rounded border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
     >
-      <span *ngIf="!isLoading()">Sign In</span>
-      <span *ngIf="isLoading()">Waiting...</span>
-    </button>
-  </form>
+      {{ generalError }}
+    </div>
 
-  <p class="text-center text-sm mt-4">
-    <a routerLink="/signup" class="text-blue-600 hover:underline"> Sign up </a>
-  </p>
-</div>
+    <button
+      type="submit"
+      [disabled]="isLoading()"
+      class="w-full rounded bg-black px-4 py-2 text-white disabled:cursor-not-allowed disabled:opacity-60"
+    >
+      {{ isLoading() ? "Signing in..." : "Sign in" }}
+    </button>
+
+    <a
+      routerLink="/signup"
+      class="block text-center text-sm text-slate-600 hover:underline"
+    >
+      Create an account
+    </a>
+  </form>
+</section>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { ApiService } from './core/api.service';
 import { AuthService } from './core/auth.service';
 import { UserContextService } from './core/user-context.service';
@@ -12,7 +12,7 @@ import { CartStore } from './core/cart.store';
   imports: [CommonModule, RouterOutlet, RouterLink],
   template: `
   <div class="min-h-screen">
-    <header class="sticky top-0 z-10 bg-white border-b">
+    <header *ngIf="showHeader()" class="sticky top-0 z-10 bg-white border-b">
       <div class="max-w-5xl mx-auto px-4 py-3 flex items-center gap-4">
         <a routerLink="/restaurants" class="font-bold text-lg">ZomatoX</a>
 
@@ -64,6 +64,10 @@ export class AppComponent {
   private router = inject(Router);
 
   logoutLoading = signal(false);
+  // Store the current route so we can decide when to show the header.
+  currentUrl = signal(this.router.url);
+  // Show the header on every page except the login and signup pages.
+  showHeader = computed(() => !['/login', '/signup'].includes(this.currentUrl()));
 
   users = this.uc.users;
   selectedKey = computed(() => `${this.uc.userId}:${this.uc.role}`);
@@ -71,6 +75,12 @@ export class AppComponent {
 
   constructor() {
     this.cartStore.load();
+    // In simple terms: whenever the page changes, update the current URL.
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.currentUrl.set(event.urlAfterRedirects);
+      }
+    });
   }
 
   switchUser(v: string) {
